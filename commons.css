@@ -20,18 +20,17 @@ body {
 }
 
 .header {
-    height: 10vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
     background: var(--medium);
     border-bottom: solid 5px var(--black);
+    padding: 1rem 0;
 }
 
 .challenge-header {
     justify-content: space-between;
-    padding: 0 2rem;
+    padding: 1rem 2rem;
 }
 
 .back-button {

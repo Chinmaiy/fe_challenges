@@ -32,14 +32,14 @@
     outline: none;
     color: #262b31;
     box-shadow: none;
+    height: inherit;
+    width: 100%;
 }
 
 .table-cell.editable:focus {
     box-shadow: 0 0 5px rgba(236, 173, 57, 0.75);
     border: 2px solid rgba(236, 173, 57, 0.75);
 }
-
-
 
 #plus-button {
     cursor: pointer;
