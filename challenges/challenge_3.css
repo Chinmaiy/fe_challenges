@@ -1,0 +1,46 @@
+@import url('../commons.css');
+
+.table {
+    border: 2px solid var(--black);
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.table-columns, .table-rows .table-row {
+    display: flex;
+}
+
+.table-columns .table-cell {
+    text-transform: uppercase;
+    background-color: var(--medium);
+}
+
+.table-cell {
+    flex: 1 0 200px;
+    border: 2px solid var(--black);
+    text-align: center;
+    font-size: 2rem;
+    box-sizing: border-box;
+}
+
+.table-cell:first-child {
+    flex: 0 0 100px;
+}
+
+.table-cell.editable {
+    background: #fff;
+    outline: none;
+    color: #262b31;
+    box-shadow: none;
+}
+
+.table-cell.editable:focus {
+    box-shadow: 0 0 5px rgba(236, 173, 57, 0.75);
+    border: 2px solid rgba(236, 173, 57, 0.75);
+}
+
+
+
+#plus-button {
+    cursor: pointer;
+}

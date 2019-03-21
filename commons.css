@@ -1,0 +1,98 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700');
+
+:root {
+    --light: #E1E3DD;
+    --medium: #ECAD39;
+    --dark: #ff8b00;
+    --black: #181716;
+    --gray: #BEB8A6;
+    --light-gray: #E3E2DD;
+}
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+    background: var(--light-gray);
+}
+
+.header {
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: var(--medium);
+    border-bottom: solid 5px var(--black);
+}
+
+.challenge-header {
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+.back-button {
+    color: var(--black);
+    font-size: 3rem;
+}
+
+.page-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.ordered-list {
+    counter-reset: list-counter;
+}
+
+.ordered-list-item {
+    counter-increment: list-counter;
+    position: relative;
+}
+
+.ordered-list-item::before {
+    content: counter(list-counter);
+    position: absolute;
+    line-height: 2rem;
+    height: 2rem;
+    width: 2rem;
+    font-size: 1.5rem;
+    border: #181716 2px solid;
+    border-radius: 50%;
+    text-align: center;
+    background: var(--medium);
+    color: var(--black);
+}
+
+button {
+    box-shadow: 4px 4px 5px 0px var(--medium);
+    border-radius:12px;
+    border:1px solid var(--dark);
+    display:inline-block;
+    cursor:pointer;
+    color:var(--medium);
+    font-weight:bold;
+    padding:16px 32px;
+    text-decoration:none;
+}
+button:hover {
+    background:linear-gradient(to bottom, var(--dark) 5%, var(--medium) 100%);
+    color: var(--black);
+}
+button:active {
+    outline: none;
+    border:none;
+    position:relative;
+    top:0.5px;
+}
+button:focus {
+    outline: none;
+}

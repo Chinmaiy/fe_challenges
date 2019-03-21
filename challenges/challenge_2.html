@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <title>Challenge Two</title>
+        <link rel="stylesheet" 
+            href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" 
+            integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" 
+            crossorigin="anonymous">
+        <link rel="stylesheet" href="challenge_2.css">
+    </head>
+
+    <body>
+        <header class="header challenge-header">
+            <a class="back-button" href="../index.html">
+                <i class="fas fa-chevron-circle-left"></i>
+            </a>
+            <h1>Challenge Two</h1>
+        </header>
+
+        <section class="page-container">
+            <div class="button-container">
+                <button id="add-team-btn" onclick="addTeamContainer()">Add Team</button>
+                <button id="calc-averages-btn" onclick="calculateAverages()">Calculate Averages</button>
+            </div>
+
+            <div class="ordered-list teams-container">
+                
+            </div>
+
+            <div class="averages-container">
+                <h1>Averages</h1>
+                <ol id="averages-list">
+                </ol>
+            </div>
+        </section>
+
+        <script src="challenge_2.js"></script>
+    </body>
+</html>

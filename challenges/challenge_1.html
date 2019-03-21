@@ -1,0 +1,43 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Challenge One</title>
+    <link rel="stylesheet" 
+            href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" 
+            integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" 
+            crossorigin="anonymous">
+    <link rel="stylesheet" href="challenge_1.css">
+</head>
+<body>
+    
+    <header class="header challenge-header">
+        <a class="back-button" href="../index.html">
+            <i class="fas fa-chevron-circle-left"></i>
+        </a>
+        <h1>Challenge One</h1>
+    </header>
+    
+
+    <section class="page-container">
+        <div class="ordered-list people-data-container">
+                
+        </div>
+
+        <div class="button-container">
+            <i id="plus-button" class="fas fa-plus-circle" onclick="addPersonDataContainer()"></i>
+            <i id="calc-button" class="fas fa-calculator" onclick="calculateBMITop()"></i>
+        </div>
+
+        <div class="bmi-top-container">
+            <h1 class="title">BMI Top</h1>
+            <div class="ordered-list bmi-top">
+            </div>
+        </div>
+    </section>
+
+    <script src="challenge_1.js"></script>
+</body>
+</html>
