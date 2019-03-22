@@ -10,17 +10,26 @@ GAME RULES:
 */
 
 var GAME;
-newGame(2, 20);
+newGame(2, 10);
 addHandlers();
 
 function addHandlers() {
-    firstElemWithClass('btn-new').addEventListener('click', () => newGame(2, 20));
+    firstElemWithClass('btn-new').addEventListener('click', () => newGame(2, 10));
     firstElemWithClass('btn-roll').addEventListener('click', rollDice);
-    firstElemWithClass('btn-hold').addEventListener('click', () => GAME.updateOnHold());
+    firstElemWithClass('btn-hold').addEventListener('click', () => {
+        if(!GAME.isFinished()) {
+            GAME.updateOnHold()
+        }
+    });
 }
 
 function newGame(playersNr, endScore) {
     GAME = initGame(playersNr, endScore);
+    var winner = document.getElementsByClassName('winner');
+    if(winner.length !== 0) {
+        winner[0].classList.remove('winner');
+    }
+    toggleBtnDisplay(['btn-roll', 'btn-hold'], false);
     display(GAME);
 }
 
@@ -39,11 +48,15 @@ function initGame(playersNr, endScore) {
 
         getWinner: function () {
             for(var i = 0; i < this.scores.length; ++i) {
-                if(this.scores[i] === 100) {
+                if(this.scores[i] >= endScore) {
                     return i;
                 }
             }
             return -1;
+        },
+
+        isFinished: function() {
+            return this.winner !== -1;
         },
 
         updateOnRoll: function(diceRoll) {
@@ -59,12 +72,15 @@ function initGame(playersNr, endScore) {
         updateOnHold: function() {
             this.scores[this.currentPlayer] += this.roundScore;
             this.nextPlayer();
+            this.winner = this.getWinner();
             display(this);
         },
 
         nextPlayer: function() {
-            this.currentPlayer = (this.currentPlayer + 1) % this.playersNr;
-            this.roundScore = 0;
+            if(!this.isFinished()) {
+                this.currentPlayer = (this.currentPlayer + 1) % this.playersNr;
+                this.roundScore = 0;
+            }
         }
     }
 }
@@ -89,25 +105,33 @@ function display(game) {
             elem.innerText = '0';
         }
     })
+
+    if(game.isFinished()) {
+        wrapper.children[game.winner].classList.add('winner');
+        toggleBtnDisplay(['btn-roll', 'btn-hold'], true);
+    }
 }
 
 function rollDice() {
 
-    toggleDiceShake();
-    toggleBtnDisplay();
+    if(!GAME.isFinished()) {
+        var btns = ['btn-new', 'btn-roll', 'btn-hold'];
+        toggleDiceShake();
+        toggleBtnDisplay(btns, true);
 
-    var shuffled = shuffle([1, 2, 3, 4, 5, 6]);
-    var diceRoll = random(1, shuffled.length);
-    for(var i = 0; i < shuffled.length; ++i) {
-        var next;
-        if(i === shuffled.length - 1) {
-            next = () => changeDice(diceRoll, () => {
-                toggleDiceShake();
-                GAME.updateOnRoll(diceRoll);
-                toggleBtnDisplay();
-            });
+        var shuffled = shuffle([1, 2, 3, 4, 5, 6]);
+        var diceRoll = random(1, shuffled.length);
+        for(var i = 0; i < shuffled.length; ++i) {
+            var next;
+            if(i === shuffled.length - 1) {
+                next = () => changeDice(diceRoll, () => {
+                    toggleDiceShake();
+                    GAME.updateOnRoll(diceRoll);
+                    toggleBtnDisplay(btns, false);
+                });
+            }
+            window.setTimeout(changeDice, (i+1) * 200, shuffled[i], next);
         }
-        window.setTimeout(changeDice, (i+1) * 200, shuffled[i], next);
     }
 }
 
@@ -124,10 +148,14 @@ function toggleDiceShake() {
     diceElem.classList.toggle('shake');
 }
 
-function toggleBtnDisplay() {
-    var btns = ['btn-new', 'btn-roll', 'btn-hold'];
+function toggleBtnDisplay(btns, hide) {
     btns.forEach(btn => {
-        firstElemWithClass(btn).classList.toggle('hide');
+        if(hide) {
+            firstElemWithClass(btn).classList.add('hide');
+        }
+        else {
+            firstElemWithClass(btn).classList.remove('hide');
+        }
     })
 }
 
