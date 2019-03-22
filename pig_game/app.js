@@ -10,6 +10,8 @@ GAME RULES:
 */
 
 var GAME;
+var DICE_VALUES = [1, 2, 3, 4, 5, 6];
+var DICE_NR = document.getElementsByClassName('dice').length;
 newGame(2);
 addHandlers();
 
@@ -36,8 +38,8 @@ function newGame(playersNr) {
     if(winner) {
         winner.classList.remove('winner');
     }
-    toggleDisplay(['btn-roll', 'btn-hold'], false);
-    toggleDisplay(['dice'], true);
+    toggleDisplay(['btn-roll', 'btn-hold'], { remove: 'hide'});
+    toggleDisplay(['dice'], { add: 'hide'});
 
     GAME = initGame(playersNr, endScore);
     display(GAME);
@@ -54,29 +56,21 @@ function initGame(playersNr, endScore) {
         scores: new Array(playersNr).fill(0),
         roundScore: 0,
         endScore: endScore,
-        previousDice: -1,
 
         isFinished: function() {
             return this.scores[this.currentPlayer] >= endScore;
         },
 
-        shouldLoseScore: function(diceRoll) {
-            return diceRoll === 6 && diceRoll === this.previousDice;
+        rolledOne: function(diceRoll) {
+            return diceRoll.filter(dice => dice === 1).length !== 0;
         },
 
         updateOnRoll: function(diceRoll) {
-            if(diceRoll !== 1) {
-                if(this.shouldLoseScore(diceRoll)) {
-                    this.scores[this.currentPlayer] = 0;
-                    this.nextPlayer();
-                }
-                else {
-                    this.roundScore += diceRoll;
-                    this.previousDice = diceRoll;
-                }
+            if(this.rolledOne(diceRoll)) {
+                this.nextPlayer();
             }
             else {
-                this.nextPlayer();
+                this.roundScore += diceRoll.reduce((acc, dice) => acc + dice);
             }
             display(this);
         },
@@ -121,7 +115,7 @@ function display(game) {
     if(game.isFinished()) {
         document.getElementsByClassName('player-name')[game.currentPlayer].innerText = "WINNER";
         wrapper.children[game.currentPlayer].classList.add('winner');
-        toggleDisplay(['btn-roll', 'btn-hold', 'dice'], true);
+        toggleDisplay(['btn-roll', 'btn-hold', 'dice'], { add: 'hide' });
     }
     else {
         wrapper.children[game.currentPlayer].classList.add('active');
@@ -131,57 +125,83 @@ function display(game) {
 function rollDice() {
 
     if(!GAME.isFinished()) {
-        document.querySelector('.dice').classList.remove('hide');
-        var btns = ['btn-new', 'btn-roll', 'btn-hold'];
-        toggleDiceShake();
-        toggleDisplay(btns, true);
+        toggleDisplay(['dice'], { remove: 'hide', add: 'shake' });
 
-        var shuffled = shuffle([1, 2, 3, 4, 5, 6]);
-        var diceRoll = random(1, shuffled.length);
+        var btns = ['btn-new', 'btn-roll', 'btn-hold'];
+        toggleDisplay(btns, { add: 'hide' });
+
+        var shuffled = shuffledDecks(DICE_NR, DICE_VALUES);
+        var diceRoll = randomSet(DICE_NR, DICE_VALUES[0], DICE_VALUES[DICE_VALUES.length - 1]);
         for(var i = 0; i < shuffled.length; ++i) {
             var next;
-            if(i === shuffled.length - 1) {
+            if(i === DICE_VALUES.length - 1) {
                 next = () => changeDice(diceRoll, () => {
-                    toggleDiceShake();
+                    toggleDisplay(['dice'], { remove: 'shake'})
                     GAME.updateOnRoll(diceRoll);
-                    toggleDisplay(btns, false);
+                    toggleDisplay(btns, { remove: 'hide'});
                 });
             }
-            window.setTimeout(changeDice, (i+1) * 100, shuffled[i], next);
+            window.setTimeout(changeDice, (i+1) * 200, shuffled[i], next);
         }
     }
 }
 
-function changeDice(faceNr, next) {
-    var diceElem = firstElemWithClass('dice');
-    diceElem.src = `./img/dice-${faceNr}.png`;
+function changeDice(faceNrs, next) {
+    var diceElems = document.getElementsByClassName('dice');
+    for(var i = 0; i < diceElems.length; ++i) {
+        diceElems[i].src = `./img/dice-${faceNrs[i]}.png`;
+    }
     if(next) {
         next();
     }
 }
 
-function toggleDiceShake() {
-    var diceElem = firstElemWithClass('dice');
-    diceElem.classList.toggle('shake');
+function toggleDisplay(classNamesSelectors, classesInfo) {
+    classNamesSelectors.map(name => [...document.getElementsByClassName(name)])
+        .flatMap(elem => elem)
+        .forEach(elem => {
+            if(classesInfo.add) {
+                classesInfo.add.split(" ").forEach(cls => elem.classList.add(cls));
+            }
+
+            if(classesInfo.remove) {
+                classesInfo.remove.split(" ").forEach(cls => elem.classList.remove(cls));
+            }
+        });
 }
 
-function toggleDisplay(classNames, hide) {
-    classNames.forEach(name => {
-        if(hide) {
-            firstElemWithClass(name).classList.add('hide');
+function shuffledDecks(deckSize, values) {
+    var shuffled = [];
+    for(var i = 0; i < deckSize; ++i) {
+        shuffled.push(shuffle(values));
+    }
+
+    var decks = [];
+    for(var i = 0; i < values.length; ++i) {
+        var deck = [];
+        for(var j = 0; j < deckSize; ++j) {
+            deck.push(shuffled[j][i]);
         }
-        else {
-            firstElemWithClass(name).classList.remove('hide');
-        }
-    })
+        decks.push(deck);
+    }
+    return decks;
 }
 
 function shuffle(arr) {
-    for(var i = arr.length - 1; i >= 0; --i) {
+    var copy = arr.slice();
+    for(var i = copy.length - 1; i >= 0; --i) {
         var replaceWithIdx = random(0, i);
-        var temp = arr[i];
-        arr[i] = arr[replaceWithIdx];
-        arr[replaceWithIdx] = temp;
+        var temp = copy[i];
+        copy[i] = copy[replaceWithIdx];
+        copy[replaceWithIdx] = temp;
+    }
+    return copy;
+}
+
+function randomSet(nr, min, max) {
+    var arr = []
+    for(var i = 0; i < nr; ++i) {
+        arr.push(random(min, max));
     }
     return arr;
 }
