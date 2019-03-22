@@ -30,6 +30,7 @@ function newGame(playersNr, endScore) {
         winner[0].classList.remove('winner');
     }
     toggleBtnDisplay(['btn-roll', 'btn-hold'], false);
+    document.querySelector('.dice').classList.add('hide');
     display(GAME);
 }
 
@@ -38,19 +39,19 @@ function firstElemWithClass(className) {
 }
 
 function initGame(playersNr, endScore) {
+    [...document.getElementsByClassName('player-name')]
+        .forEach((elem, idx) => elem.innerText = `Player ${idx + 1}`);
     return {
         playersNr: playersNr,
-        currentPlayer: 0,
+        currentPlayer: random(0, playersNr),
         scores: new Array(playersNr).fill(0),
         roundScore: 0,
         endScore: endScore,
         winner: -1,
 
         getWinner: function () {
-            for(var i = 0; i < this.scores.length; ++i) {
-                if(this.scores[i] >= endScore) {
-                    return i;
-                }
+            if(this.scores[this.currentPlayer] >= endScore) {
+                return this.currentPlayer;
             }
             return -1;
         },
@@ -71,8 +72,10 @@ function initGame(playersNr, endScore) {
 
         updateOnHold: function() {
             this.scores[this.currentPlayer] += this.roundScore;
-            this.nextPlayer();
             this.winner = this.getWinner();
+            if(!this.isFinished()) {
+                this.nextPlayer();
+            }
             display(this);
         },
 
@@ -88,10 +91,9 @@ function initGame(playersNr, endScore) {
 function display(game) {
 
     var activePane = firstElemWithClass('active');
-    activePane.classList.toggle('active');
-
-    var wrapper = firstElemWithClass('wrapper');
-    wrapper.children[game.currentPlayer].classList.toggle('active');
+    if(activePane) {
+        activePane.classList.remove('active');
+    }
 
     var scoresDiv = document.getElementsByClassName('player-score');
     [...scoresDiv].forEach((elem, idx) => elem.innerText = game.scores[idx]);
@@ -106,15 +108,21 @@ function display(game) {
         }
     })
 
+    var wrapper = firstElemWithClass('wrapper');
     if(game.isFinished()) {
+        document.getElementsByClassName('player-name')[game.currentPlayer].innerText = "WINNER";
         wrapper.children[game.winner].classList.add('winner');
         toggleBtnDisplay(['btn-roll', 'btn-hold'], true);
+    }
+    else {
+        wrapper.children[game.currentPlayer].classList.add('active');
     }
 }
 
 function rollDice() {
 
     if(!GAME.isFinished()) {
+        document.querySelector('.dice').classList.remove('hide');
         var btns = ['btn-new', 'btn-roll', 'btn-hold'];
         toggleDiceShake();
         toggleBtnDisplay(btns, true);
@@ -130,7 +138,7 @@ function rollDice() {
                     toggleBtnDisplay(btns, false);
                 });
             }
-            window.setTimeout(changeDice, (i+1) * 200, shuffled[i], next);
+            window.setTimeout(changeDice, (i+1) * 100, shuffled[i], next);
         }
     }
 }
