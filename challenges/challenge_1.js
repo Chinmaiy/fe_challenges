@@ -67,7 +67,7 @@ function calculateBMITop() {
 function getPersonBmiUI(personData) {
     var p = document.createElement("p");
     p.className = "ordered-list-item person-top";
-    p.innerText = `${personData.name} - ${personData.bmi}`;
+    p.innerText = `${personData.name} - ${personData.calcBmi()}`;
     return p;
 }
 
@@ -84,7 +84,11 @@ function getBmiData() {
         .map(([name, mass, height]) => {
             return {
                 name: name,
-                bmi: computeBmi(mass, height)
+                mass: mass,
+                height: height,
+                calcBmi: function() {
+                    return this.mass / Math.pow(this.height, 2);
+                }
             };
         });
 }
@@ -93,8 +97,4 @@ function getPersonBmiData(personContainer) {
     var data = [...personContainer.children]
         .map(userInput => userInput.value);
     return data;
-}
-
-function computeBmi(mass, height) {
-    return mass / Math.pow(height, 2);
 }
