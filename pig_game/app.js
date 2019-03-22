@@ -10,11 +10,11 @@ GAME RULES:
 */
 
 var GAME;
-newGame(2, 10);
+newGame(2);
 addHandlers();
 
 function addHandlers() {
-    firstElemWithClass('btn-new').addEventListener('click', () => newGame(2, 10));
+    firstElemWithClass('btn-new').addEventListener('click', () => newGame(2));
     firstElemWithClass('btn-roll').addEventListener('click', rollDice);
     firstElemWithClass('btn-hold').addEventListener('click', () => {
         if(!GAME.isFinished()) {
@@ -23,14 +23,23 @@ function addHandlers() {
     });
 }
 
-function newGame(playersNr, endScore) {
-    GAME = initGame(playersNr, endScore);
-    var winner = document.getElementsByClassName('winner');
-    if(winner.length !== 0) {
-        winner[0].classList.remove('winner');
+function newGame(playersNr) {
+    var endScoreInput = document.getElementById('end-score');
+    var endScore = endScoreInput.value ? endScoreInput.value : 10;
+    endScoreInput.value = endScore;
+    endScoreInput.classList.add('score-set');
+
+    [...document.getElementsByClassName('player-name')]
+        .forEach((elem, idx) => elem.innerText = `Player ${idx + 1}`);
+
+    var winner = firstElemWithClass('winner');
+    if(winner) {
+        winner.classList.remove('winner');
     }
-    toggleBtnDisplay(['btn-roll', 'btn-hold'], false);
-    document.querySelector('.dice').classList.add('hide');
+    toggleDisplay(['btn-roll', 'btn-hold'], false);
+    toggleDisplay(['dice'], true);
+
+    GAME = initGame(playersNr, endScore);
     display(GAME);
 }
 
@@ -39,30 +48,32 @@ function firstElemWithClass(className) {
 }
 
 function initGame(playersNr, endScore) {
-    [...document.getElementsByClassName('player-name')]
-        .forEach((elem, idx) => elem.innerText = `Player ${idx + 1}`);
     return {
         playersNr: playersNr,
         currentPlayer: random(0, playersNr),
         scores: new Array(playersNr).fill(0),
         roundScore: 0,
         endScore: endScore,
-        winner: -1,
-
-        getWinner: function () {
-            if(this.scores[this.currentPlayer] >= endScore) {
-                return this.currentPlayer;
-            }
-            return -1;
-        },
+        previousDice: -1,
 
         isFinished: function() {
-            return this.winner !== -1;
+            return this.scores[this.currentPlayer] >= endScore;
+        },
+
+        shouldLoseScore: function(diceRoll) {
+            return diceRoll === 6 && diceRoll === this.previousDice;
         },
 
         updateOnRoll: function(diceRoll) {
             if(diceRoll !== 1) {
-                this.roundScore += diceRoll;
+                if(this.shouldLoseScore(diceRoll)) {
+                    this.scores[this.currentPlayer] = 0;
+                    this.nextPlayer();
+                }
+                else {
+                    this.roundScore += diceRoll;
+                    this.previousDice = diceRoll;
+                }
             }
             else {
                 this.nextPlayer();
@@ -72,10 +83,7 @@ function initGame(playersNr, endScore) {
 
         updateOnHold: function() {
             this.scores[this.currentPlayer] += this.roundScore;
-            this.winner = this.getWinner();
-            if(!this.isFinished()) {
-                this.nextPlayer();
-            }
+            this.nextPlayer();
             display(this);
         },
 
@@ -83,6 +91,7 @@ function initGame(playersNr, endScore) {
             if(!this.isFinished()) {
                 this.currentPlayer = (this.currentPlayer + 1) % this.playersNr;
                 this.roundScore = 0;
+                this.previousDice = -1;
             }
         }
     }
@@ -111,8 +120,8 @@ function display(game) {
     var wrapper = firstElemWithClass('wrapper');
     if(game.isFinished()) {
         document.getElementsByClassName('player-name')[game.currentPlayer].innerText = "WINNER";
-        wrapper.children[game.winner].classList.add('winner');
-        toggleBtnDisplay(['btn-roll', 'btn-hold'], true);
+        wrapper.children[game.currentPlayer].classList.add('winner');
+        toggleDisplay(['btn-roll', 'btn-hold', 'dice'], true);
     }
     else {
         wrapper.children[game.currentPlayer].classList.add('active');
@@ -125,7 +134,7 @@ function rollDice() {
         document.querySelector('.dice').classList.remove('hide');
         var btns = ['btn-new', 'btn-roll', 'btn-hold'];
         toggleDiceShake();
-        toggleBtnDisplay(btns, true);
+        toggleDisplay(btns, true);
 
         var shuffled = shuffle([1, 2, 3, 4, 5, 6]);
         var diceRoll = random(1, shuffled.length);
@@ -135,7 +144,7 @@ function rollDice() {
                 next = () => changeDice(diceRoll, () => {
                     toggleDiceShake();
                     GAME.updateOnRoll(diceRoll);
-                    toggleBtnDisplay(btns, false);
+                    toggleDisplay(btns, false);
                 });
             }
             window.setTimeout(changeDice, (i+1) * 100, shuffled[i], next);
@@ -156,13 +165,13 @@ function toggleDiceShake() {
     diceElem.classList.toggle('shake');
 }
 
-function toggleBtnDisplay(btns, hide) {
-    btns.forEach(btn => {
+function toggleDisplay(classNames, hide) {
+    classNames.forEach(name => {
         if(hide) {
-            firstElemWithClass(btn).classList.add('hide');
+            firstElemWithClass(name).classList.add('hide');
         }
         else {
-            firstElemWithClass(btn).classList.remove('hide');
+            firstElemWithClass(name).classList.remove('hide');
         }
     })
 }

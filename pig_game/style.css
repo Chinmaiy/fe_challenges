@@ -119,6 +119,37 @@ button {
     transition: background-color 0.3s, color 0.3s;
 }
 
+.end-score-wrapper {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.end-score-wrapper > * {
+    font-size: 20px;
+}
+
+label {
+    margin-right: 3px;
+}
+
+input {
+    margin: 0;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: transparent;
+    outline: none;
+    appearance: none;
+    width: 50px;
+    color: #EB4D4D;
+    text-align: center;
+}
+
+input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
 button:hover { font-weight: 600; }
 button:hover i { margin-right: 20px; }
 
@@ -143,10 +174,18 @@ i {
 
 .dice {
     position: absolute;
-    left: 45%;
-    top: 178px;
     height: 100px;
     box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.10);
+}
+
+#dice-1 {
+    left: 45%;
+    top: 25%;
+}
+
+#dice-2 {
+    left: 45%;
+    top: 45%;
 }
 
 .winner { background-color: #d8d6d6; }
