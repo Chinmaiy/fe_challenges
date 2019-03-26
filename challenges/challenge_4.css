@@ -1,1 +1,44 @@
 @import url(../commons.css);
+
+
+
+#btns-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1; 
+    padding-top: 25vh;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.4); 
+    /* display: none; */
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--white);
+    margin: auto;
+    padding: 3rem;
+    border: 1px solid var(--light-gray);
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px var(--light-gray);
+    width: 50%;
+}
+
+ .modal-close-icon {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    cursor: pointer;
+    color: var(--red);
+    font-size: 2.5rem;
+    text-shadow: 2px 2px var(--dark-red);
+}
+
+

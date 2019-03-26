@@ -6,12 +6,17 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700');
 
 :root {
+    --white: #fefefe;
     --light: #E1E3DD;
     --medium: #ECAD39;
     --dark: #ff8b00;
     --black: #181716;
     --gray: #BEB8A6;
     --light-gray: #E3E2DD;
+    --red: #D01616;
+    --red-rgb: 208, 22, 22;
+    --dark-red: #6b0b0b;
+    --dark-red-rgb: 107, 11, 11;
 }
 
 body {
@@ -74,7 +79,7 @@ a {
 button {
     box-shadow: 4px 4px 5px 0px var(--medium);
     border-radius:12px;
-    border:1px solid var(--dark);
+    border:1px solid var(--medium);
     display:inline-block;
     cursor:pointer;
     color:var(--medium);
@@ -83,7 +88,9 @@ button {
     text-decoration:none;
 }
 button:hover {
-    background:linear-gradient(to bottom, var(--dark) 5%, var(--medium) 100%);
+    background: rgba(236, 173, 57, 0.75);
+    /* background:linear-gradient(to bottom, var(--medium) 5%, var(--medium) 100%); */
+    border: none;
     color: var(--black);
 }
 button:active {
@@ -94,4 +101,21 @@ button:active {
 }
 button:focus {
     outline: none;
+}
+
+input {
+    height: 2rem;
+    margin: 0;
+    padding: 0 10px;
+    background: #fff;
+    border: 2px solid #e9e9e9;
+    outline: none;
+    color: #262b31;
+    box-shadow: none;
+    font-size: 1rem;
+    border-radius: 2px;
+}
+input:focus {
+    box-shadow: 0 0 5px rgba(236, 173, 57, 0.75);
+    border: 2px solid rgba(236, 173, 57, 0.75);
 }
