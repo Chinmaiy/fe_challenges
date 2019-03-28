@@ -1,5 +1,7 @@
 (function () {
 
+    var GAME;
+
     document.getElementById('add-question-btn').addEventListener('click', () => {
         document.getElementById('add-question-modal').style.display = 'block';
         initQuestionForm();
@@ -7,6 +9,8 @@
 
     document.getElementById('play-game-btn').addEventListener('click', () => {
         document.getElementById('play-game-modal').style.display = 'block';
+        GAME = new Game(fetchStoredData());
+        GAME.display();
     })
     
     function initQuestionForm() {
@@ -109,6 +113,27 @@
             this.answers.map(answer => !isEmpty(answer))
                 .reduce((acc, curr) => acc && curr, true);
     }
+
+    var Game = function (data) {
+        this.score = 0;
+        this.questions = shuffle(data.questions);
+        this.currentQuestion = 0;
+    }
+
+    Game.prototype.display = function () {
+        document.getElementById('score').value = this.score;
+        var { question, answers } = this.questions[this.currentQuestion];
+        document.getElementById('question-text').innerText = question;
+
+        var answersDiv = document.getElementById('possible-answers');
+        clear(answersDiv);
+        answers.forEach((answer, idx) => {
+            var li = document.createElement('li');
+            li.innerText = answer;
+            li.setAttribute('data-answer-idx', idx);
+            answersDiv.appendChild(li);
+        })
+    }
     
     function getQuestionFromUI() {
         var qText = document.getElementById('question').value;
@@ -149,6 +174,21 @@
         while(elem.firstChild) {
             elem.removeChild(elem.firstChild);
         }
-    }    
+    }
+    
+    function shuffle(arr) {
+        var copy = arr.slice();
+        for(var i = copy.length - 1; i >= 0; --i) {
+            var replaceWithIdx = random(0, i);
+            var temp = copy[i];
+            copy[i] = copy[replaceWithIdx];
+            copy[replaceWithIdx] = temp;
+        }
+        return copy;
+    }
+    
+    function random(min, max) {
+        return  Math.floor(Math.random() * max + min)
+    }
 })();
     
