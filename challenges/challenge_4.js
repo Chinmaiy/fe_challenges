@@ -4,6 +4,10 @@
         document.getElementById('add-question-modal').style.display = 'block';
         initQuestionForm();
     });
+
+    document.getElementById('play-game-btn').addEventListener('click', () => {
+        document.getElementById('play-game-modal').style.display = 'block';
+    })
     
     function initQuestionForm() {
         var questionInput = document.getElementById('question');
@@ -20,6 +24,11 @@
         });
 
         document.getElementById('error-messages').style.display = 'none';
+
+        var select = document.getElementById('correct-answer');
+        while(select.children.length > 2) {
+            select.removeChild(select.lastChild);
+        }
     }
     
     [...document.getElementsByClassName('modal-close-icon')].forEach(element => {
@@ -35,9 +44,15 @@
         inputAnswer.type = 'text';
         inputAnswer.className = 'input-answer';
         inputAnswer.id = `answer-${answersNr + 1}`;
-        inputAnswer.placeholder = `Answer ${answersNr + 1}`;
+        var text = `Answer ${answersNr + 1}`
+        inputAnswer.placeholder = text;
         addInputEvents(inputAnswer);
         answersDiv.appendChild(inputAnswer);
+
+        var option = document.createElement('option');
+        option.value = answersNr;
+        option.innerText = text;
+        document.getElementById('correct-answer').appendChild(option);
     });
 
     [...document.getElementsByTagName('input')].forEach(element => addInputEvents(element));
@@ -78,10 +93,11 @@
     
     document.getElementById('')
     
-    var Question = function (question, answers) {
+    var Question = function (question, answers, correctIdx) {
         this.id = 0;
         this.question = question;
         this.answers = answers;
+        this.correctIdx = correctIdx;
     }
     
     Question.prototype.setId = function (id) {
@@ -98,17 +114,20 @@
         var qText = document.getElementById('question').value;
         var answers = [...document.getElementsByClassName('input-answer')]
                         .map(elem => elem.value);
-        return new Question(qText, answers);
+
+        var select = document.getElementById("correct-answer");
+        var correctAnswerIdx = parseInt(select.options[select.selectedIndex].value);             
+        return new Question(qText, answers, correctAnswerIdx);
     }
     
     function saveQuestion(question) {
         if(localStorage.questions) {
-            var questions = fetchQuestions();
-            var newId = questions.currentId + 1;
+            var data = fetchStoredData();
+            var newId = data.currentId + 1;
             question.setId(newId);
-            questions.currentId = newId;
-            questions.questions.push(question);
-            localStorage.questions = JSON.stringify(questions);
+            data.currentId = newId;
+            data.questions.push(question);
+            localStorage.questions = JSON.stringify(data);
         } else {
             question.setId(1);
             localStorage.questions = JSON.stringify({
@@ -118,7 +137,7 @@
         }
     }
     
-    function fetchQuestions() {
+    function fetchStoredData() {
         return JSON.parse(localStorage.questions);
     }
 

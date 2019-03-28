@@ -39,10 +39,23 @@
                         <input type="text" id="answer-2" class="input-answer" placeholder="Answer 2">
                     </div>
                 </div>
+                <div class="correct-answer-container">
+                    <label for="correct-answer">Correct: </label>
+                    <select name="correct-answer" id="correct-answer">
+                        <option value="0">Answer 1</option>
+                        <option value="1">Answer 2</option>
+                    </select>
+                </div>
                 <button id="save-question-btn">Save</button>
                 <div id="error-messages">
                     Fields cannot be left empty.
                 </div>
+            </div>
+        </div>
+
+        <div id="play-game-modal" class="modal">
+            <div class="modal-content">
+                <i data-modal-id="play-game-modal" class="modal-close-icon far fa-window-close"></i>
             </div>
         </div>
     </section>
