@@ -17,7 +17,7 @@
     height: 100%; 
     overflow: auto; 
     background-color: rgba(0, 0, 0, 0.4); 
-    /* display: none; */
+    display: none;
 }
 
 .modal-content {
@@ -36,9 +36,39 @@
     top: 1.5rem;
     right: 2rem;
     cursor: pointer;
-    color: var(--red);
-    font-size: 2.5rem;
-    text-shadow: 2px 2px var(--dark-red);
+    color: rgba(var(--red-rgb), 0.5);
+    font-size: 2rem;
 }
 
+.modal-close-icon:hover {
+    color: var(--red);
+    text-shadow: 1px 1px var(--dark-red);
+}
 
+.modal-close-icon:active {
+    top: calc(1.5rem + 0.5px);
+}
+
+.modal-content > *:not(:last-child) {
+    margin-bottom: 1rem;
+}
+
+input {
+    width: 100%;
+}
+
+.input-answer {
+    width: 50%;
+    margin-top: 1rem;
+}
+
+#answers-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#error-messages {
+    color: var(--red);
+    font-size: 1rem;
+    display: none;
+}

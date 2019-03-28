@@ -9,6 +9,7 @@
     --white: #fefefe;
     --light: #E1E3DD;
     --medium: #ECAD39;
+    --medium-rgb: 236, 173, 57;
     --dark: #ff8b00;
     --black: #181716;
     --gray: #BEB8A6;
@@ -77,25 +78,23 @@ a {
 }
 
 button {
-    box-shadow: 4px 4px 5px 0px var(--medium);
+    box-shadow: 1px 1px 3px 0px var(--medium);
     border-radius:12px;
-    border:1px solid var(--medium);
+    border:1px solid rgba(var(--medium-rgb), 0.4);
     display:inline-block;
     cursor:pointer;
     color:var(--medium);
     font-weight:bold;
     padding:16px 32px;
     text-decoration:none;
+    background-color: transparent;
 }
 button:hover {
-    background: rgba(236, 173, 57, 0.75);
-    /* background:linear-gradient(to bottom, var(--medium) 5%, var(--medium) 100%); */
-    border: none;
+    background: rgba(var(--medium-rgb), 0.75);
     color: var(--black);
 }
 button:active {
     outline: none;
-    border:none;
     position:relative;
     top:0.5px;
 }
@@ -116,6 +115,12 @@ input {
     border-radius: 2px;
 }
 input:focus {
-    box-shadow: 0 0 5px rgba(236, 173, 57, 0.75);
-    border: 2px solid rgba(236, 173, 57, 0.75);
+    box-shadow: 0 0 5px rgba(var(--medium-rgb), 0.75);
+    border: 2px solid rgba(var(--medium-rgb), 0.75);
+}
+
+input.error {
+    position: relative;
+    box-shadow: 0 0 5px rgba(var(--red-rgb), 0.75);
+    border: 2px solid rgba(var(--red-rgb), 0.75);
 }

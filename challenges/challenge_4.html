@@ -24,16 +24,27 @@
     <section class="page-container">
 
         <div id="btns-container">
-            <button>Add question</button>
-            <button>Play game</button>
+            <button id="add-question-btn">Add question</button>
+            <button id="play-game-btn">Play game</button>
         </div>
         
-        <div class="modal">
+        <div id="add-question-modal" class="modal">
             <div class="modal-content">
-                <i class="modal-close-icon far fa-window-close"></i>
+                <i data-modal-id="add-question-modal" class="modal-close-icon far fa-window-close"></i>
+                <button id="add-answer-btn">Add answer</button>
+                <div id="question-form">
+                    <input type="text" id="question" placeholder="Question">
+                    <div id="answers-container">
+                        <input type="text" id="answer-1" class="input-answer" placeholder="Answer 1">
+                        <input type="text" id="answer-2" class="input-answer" placeholder="Answer 2">
+                    </div>
+                </div>
+                <button id="save-question-btn">Save</button>
+                <div id="error-messages">
+                    Fields cannot be left empty.
+                </div>
             </div>
         </div>
-
     </section>
 
     <script src="challenge_4.js"></script>
