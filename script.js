@@ -116,11 +116,11 @@ var emily = {
 
 var johnFriendly = john.presentation.bind(john, 'friendly');
 
-johnFriendly('morning');
-johnFriendly('night');
+//johnFriendly('morning');
+//johnFriendly('night');
 
 var emilyFormal = john.presentation.bind(emily, 'formal');
-emilyFormal('afternoon');
+//emilyFormal('afternoon');
 
 function isFullAge(limit, el) {
     return el >= limit;

@@ -121,20 +121,44 @@
     }
 
     Game.prototype.display = function () {
-        document.getElementById('score').value = this.score;
-        var { question, answers } = this.questions[this.currentQuestion];
-        document.getElementById('question-text').innerText = question;
-
-        var answersDiv = document.getElementById('possible-answers');
-        clear(answersDiv);
-        answers.forEach((answer, idx) => {
-            var li = document.createElement('li');
-            li.innerText = answer;
-            li.setAttribute('data-answer-idx', idx);
-            answersDiv.appendChild(li);
-        })
-    }
+        var final = document.getElementById('final-wrapper');
+        var container = document.getElementById('modal-replace-content');
+        if(this.currentQuestion >= this.questions.length) {
+            final.innerText = `Final score: ${this.score}`;
+            final.style.display = 'block';
+            container.style.display = 'none';
+            return;
+        } else {
+            final.style.display = 'none';
+            container.style.display = 'block';
+            document.getElementById('score').innerText = this.score;
+            var { question, answers } = this.questions[this.currentQuestion];
+            document.getElementById('question-text').innerText = question;
     
+            var answersDiv = document.getElementById('possible-answers');
+            clear(answersDiv);
+            answers.forEach((answer, idx) => {
+                var li = document.createElement('li');
+                li.innerText = answer;
+                li.setAttribute('data-answer-idx', idx);
+                answersDiv.appendChild(li);
+    
+                li.addEventListener('click', () => {
+                    var chosenAnswer = parseInt(idx);
+                    GAME.chooseAnswer(chosenAnswer);
+                });
+            })
+        }
+    };
+
+    Game.prototype.chooseAnswer = function (chosenAnswerIdx) {
+        if(chosenAnswerIdx === this.questions[this.currentQuestion].correctIdx) {
+            this.score += 5;
+        }
+        this.currentQuestion +=1;
+        this.display();
+    };
+
     function getQuestionFromUI() {
         var qText = document.getElementById('question').value;
         var answers = [...document.getElementsByClassName('input-answer')]
