@@ -1,0 +1,29 @@
+.sidebar {
+	width: 300px;
+	font-family: Arial, sans-serif;
+}
+
+.accordion section {
+	transition: height 0.3s;
+}
+
+.accordion section.is-hidden {
+	height: 0 !important;
+}
+
+.accordion .accordion-item {
+	overflow: hidden;
+}
+
+.accordion-default header a {
+	display: block;
+	padding: 10px;
+	border: 1px solid #b7b7b7;
+	margin-bottom: 2px;
+	text-decoration: none;
+	color: #4c70ff;
+}
+
+.accordion-default section {
+	/* height: 150px; */
+}
