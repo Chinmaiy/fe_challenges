@@ -80,6 +80,7 @@ import * as searchView from "./views/searchView";
             console.log(state.recipe);
         } catch(error) {
             alert('Something went wront with retrieving the recipe...');
+            console.log(error);
         }
       }
   }
