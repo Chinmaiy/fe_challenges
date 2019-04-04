@@ -17,20 +17,26 @@ export default class RecipeService {
                 console.log(error);
             }
         } 
-        return this.getMockRecipes(query);
+        return await this.getMockRecipes(query);
     }
 
-    async getMockRecipes(query) {
-        return [
-            {
-                "publisher": "Allrecipes.com",
-                "social_rank": 99.81007979198002, 
-                "f2f_url": "https://www.food2fork.com/recipes/view/29159", 
-                "publisher_url": "http://allrecipes.com", 
-                "title": "Slow-Cooker Chicken Tortilla Soup", 
-                "source_url": "http://allrecipes.com/Recipe/Slow-Cooker-Chicken-Tortilla-Soup/Detail.aspx",
-                "page":1
-            }
-        ]
+    getMockRecipes(query) {
+
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const recipes = [
+                    {
+                        "publisher": "Allrecipes.com",
+                        "social_rank": 99.81007979198002, 
+                        "f2f_url": "https://www.food2fork.com/recipes/view/29159", 
+                        "publisher_url": "http://allrecipes.com", 
+                        "title": "Slow-Cooker Chicken Tortilla Soup", 
+                        "source_url": "http://allrecipes.com/Recipe/Slow-Cooker-Chicken-Tortilla-Soup/Detail.aspx",
+                        "page":1
+                    }
+                ];
+                resolve(recipes);
+            }, 1500);
+        })
     }
 };

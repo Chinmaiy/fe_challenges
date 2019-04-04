@@ -1,4 +1,3 @@
-import axios from 'axios';
 import RecipeService from '../services/recipeService';
 
 export default class Search {
@@ -9,6 +8,6 @@ export default class Search {
     }
 
     async getResults() {
-        return await this.recipeService.getRecipes(this.query);
+        this.result = await this.recipeService.getRecipes(this.query);
     }
 }
