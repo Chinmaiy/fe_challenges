@@ -1,7 +1,8 @@
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
-import { elements, renderLoader, removeLoader } from "./views/base";
+import { elements, renderLoader, removeLoader, removeSelf } from "./views/base";
 import * as searchView from "./views/searchView";
+import * as recipeView from "./views/recipeView";
 
 // Global app controller
 
@@ -28,6 +29,7 @@ import * as searchView from "./views/searchView";
         // 2. New search object + add to state
         state.search = new Search(query);
         // 3. Prepare UI for results
+        window.location.hash = `#${query}`;
         searchView.clearInput();
         searchView.clearResultList();
         renderLoader(elements.searchRes);
@@ -68,16 +70,18 @@ import * as searchView from "./views/searchView";
       const id = parseInt(window.location.hash.replace('#', ''));
 
       if(id) {
-        // Prepare UI for changes
-
         // Create new recipe object
         state.recipe = new Recipe(id);
+        // Prepare UI for changes
+        recipeView.clearRecipe();
+        renderLoader(elements.recipe);
         try {
             // Get recipe data
             await state.recipe.getRecipe();
             
             // Render recipe
-            console.log(state.recipe);
+            removeLoader();
+            recipeView.renderRecipe(state.recipe);
         } catch(error) {
             alert('Something went wront with retrieving the recipe...');
             console.log(error);
