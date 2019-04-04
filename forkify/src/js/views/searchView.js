@@ -64,7 +64,7 @@ const renderButtons = (page, resPerPage, numResults) => {
     elements.searchResPages.insertAdjacentHTML('afterbegin', buttonMarkup);
 };
 
-export const renderResults = (recipes, page = 1, resPerPage = 1) => {
+export const renderResults = (recipes, page = 1, resPerPage = 2) => {
     // render results of current page
     const start = (page - 1) * resPerPage;
     const end = start + resPerPage;

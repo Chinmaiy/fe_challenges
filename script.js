@@ -325,4 +325,4 @@ async function getShowsLike(query) {
     console.log(data);
 } 
 
-getShowsLike('friends');
+//getShowsLike('friends');
