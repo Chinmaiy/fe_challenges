@@ -46,6 +46,17 @@ export default class RecipeService {
                         "source_url": "https://www.closetcooking.com/jalapeno-popper-grilled-cheese-sandwich/",
                         "image_url": "http://static.food2fork.com/Jalapeno2BPopper2BGrilled2BCheese2BSandwich2B12B500fd186186.jpg",
                         "page":1
+                    },
+                    {
+                        "recipe_id": 34889,
+                        "publisher": "Allrecipes.com",
+                        "social_rank": 100.0, 
+                        "f2f_url": "https://www.food2fork.com/view/Zesty_Slow_Cooker_Chicken_Barbeque/34889", 
+                        "publisher_url": "http://allrecipes.com", 
+                        "title": "Zesty Slow Cooker Chicken Barbeque", 
+                        "source_url": "http://allrecipes.com/Recipe/Zesty-Slow-Cooker-Chicken-Barbecue/Detail.aspx",
+                        "image_url": "http://static.food2fork.com/4515542dbb.jpg",
+                        "page":1
                     }
                 ];
                 resolve(recipes);

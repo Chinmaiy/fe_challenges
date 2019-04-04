@@ -39,3 +39,12 @@ import * as searchView from "./views/searchView";
     event.preventDefault(); //to not reload the page (default behavior for form)
     controlSearch();
  });
+
+ elements.searchResPages.addEventListener('click', event => {
+     const btn = event.target.closest('.btn-inline');
+     if(btn) {
+         const goToPage = parseInt(btn.dataset.goto, 10);
+         searchView.clearResultList();
+         searchView.renderResults(state.search.result, goToPage);
+     }
+ })
