@@ -75,6 +75,9 @@ import * as recipeView from "./views/recipeView";
         // Prepare UI for changes
         recipeView.clearRecipe();
         renderLoader(elements.recipe);
+        if(state.search) {
+            searchView.highlightSelected(state.recipe.id);
+        }
         try {
             // Get recipe data
             await state.recipe.getRecipe();
