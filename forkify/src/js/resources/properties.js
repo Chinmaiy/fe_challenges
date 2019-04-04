@@ -1,3 +1,5 @@
-export default properties = {
+const properties = {
     apiKey: 'replace this'
 }
+
+export default properties;
