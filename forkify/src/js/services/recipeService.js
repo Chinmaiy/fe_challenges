@@ -80,6 +80,41 @@ const getMockRecipe = id => {
                         "vegetable oil"
                     ]
                 }; break;
+                case 35382: recipe = {
+                    "recipe_id": 35382,
+                    "publisher": "Closet Cooking",
+                    "social_rank": 100.0, 
+                    "f2f_url": "https://www.food2fork.com/recipes/view/35382", 
+                    "publisher_url": "https://www.closetcooking.com", 
+                    "title": "Jalapeno Popper Grilled Cheese Sandwich", 
+                    "source_url": "https://www.closetcooking.com/jalapeno-popper-grilled-cheese-sandwich/",
+                    "image_url": "http://static.food2fork.com/Jalapeno2BPopper2BGrilled2BCheese2BSandwich2B12B500fd186186.jpg",
+                    "ingredients": [
+                        "2 jalapeno peppers, cut in half lengthwise and seeded",
+                        "2 slices sour dough bread",
+                        "1 tablespoon butter, room temperature",
+                        "2 tablespoons cream cheese, room temperature",
+                        "1/2 cup jack and cheddar cheese, shredded",
+                        "1 tablespoon tortilla chips, crumbled"
+                    ]
+                }; break;
+                case 34889: recipe = {
+                    "recipe_id": 34889,
+                    "publisher": "All Recipes",
+                    "social_rank": 100.0, 
+                    "f2f_url": "https://www.food2fork.com/view/Zesty_Slow_Cooker_Chicken_Barbeque/34889", 
+                    "publisher_url": "http://allrecipes.com", 
+                    "title": "Zesty Slow Cooker Chicken Barbeque", 
+                    "source_url": "http://allrecipes.com/Recipe/Zesty-Slow-Cooker-Chicken-Barbecue/Detail.aspx",
+                    "image_url": "http://static.food2fork.com/4515542dbb.jpg",
+                    "ingredients": [
+                        "6 frozen skinless, boneless chicken breast halves",
+                        "1 (12 ounce) bottle barbeque sauce",
+                        "1/2 cup Italian salad dressing",
+                        "1/4 cup brown sugar",
+                        "2 tablespoons Worcestershire sauce"
+                    ]
+                }; break;
             }
             resolve(recipe);
         }, 1000, id);
