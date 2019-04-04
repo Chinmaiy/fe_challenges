@@ -1,5 +1,5 @@
 import Search from "./models/Search";
-import { elements } from "./views/base";
+import { elements, renderLoader, removeLoader } from "./views/base";
 import * as searchView from "./views/searchView";
 
 // Global app controller
@@ -26,9 +26,11 @@ import * as searchView from "./views/searchView";
         // 3. Prepare UI for results
         searchView.clearInput();
         searchView.clearResultList();
+        renderLoader(elements.searchRes);
         // 4. Search for recipes
         await state.search.getResults();
         // 5. Render results on UI
+        removeLoader();
         searchView.renderResults(state.search.result);
     }
  }
