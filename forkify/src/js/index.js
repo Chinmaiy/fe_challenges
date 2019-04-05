@@ -93,3 +93,16 @@ import * as recipeView from "./views/recipeView";
   }
 
   ['hashchange', 'load'].forEach(eventType => window.addEventListener(eventType, controlRecipe));
+
+  // Handling recipe button clicks
+  elements.recipe.addEventListener('click', event => {
+        if(event.target.matches('.btn-decrease, .btn-decrease *')) {
+            if(state.recipe.servings > 1) {
+                state.recipe.updateServings('dec');
+                recipeView.updateServingsIngredients(state.recipe);
+            }
+        } else if(event.target.matches('.btn-increase, .btn-increase *')) {
+            state.recipe.updateServings('inc');
+            recipeView.updateServingsIngredients(state.recipe);
+        }
+  });
