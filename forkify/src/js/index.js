@@ -1,8 +1,10 @@
 import Search from "./models/Search";
 import Recipe from "./models/Recipe";
+import List from "./models/List";
 import { elements, renderLoader, removeLoader, removeSelf } from "./views/base";
 import * as searchView from "./views/searchView";
 import * as recipeView from "./views/recipeView";
+import * as listView from "./views/listView";
 
 // Global app controller
 
@@ -92,17 +94,49 @@ import * as recipeView from "./views/recipeView";
       }
   }
 
-  ['hashchange', 'load'].forEach(eventType => window.addEventListener(eventType, controlRecipe));
+['hashchange', 'load'].forEach(eventType => window.addEventListener(eventType, controlRecipe));
 
-  // Handling recipe button clicks
-  elements.recipe.addEventListener('click', event => {
-        if(event.target.matches('.btn-decrease, .btn-decrease *')) {
-            if(state.recipe.servings > 1) {
-                state.recipe.updateServings('dec');
-                recipeView.updateServingsIngredients(state.recipe);
-            }
-        } else if(event.target.matches('.btn-increase, .btn-increase *')) {
-            state.recipe.updateServings('inc');
+/**
+ * LIST CONTROLLER
+ */
+const controlList = () => {
+    if(!state.list) {
+        state.list = new List();
+    }
+
+    state.recipe.ingredients.forEach(ing => {
+        const item = state.list.addItem(ing);
+        listView.renderItem(item);
+    });
+};
+
+// Handling delete and update shopping list item event
+elements.shoppingList.addEventListener('click', event => {
+    const id = event.target.closest('.shopping__item').dataset.itemid;
+
+    // handle delete
+    if(event.target.matches('.shopping__delete, .shopping__delete *')) {
+        //delete from state
+        state.list.deleteItem(id);
+        //delete from UI
+        listView.deleteItem(id);
+    } else if(event.target.matches('.shopping__count-value')) { //handle count update
+        const val = parseFloat(event.target.value, 10);
+        state.list.updateItem(id, val);
+    }
+});
+
+// Handling recipe button clicks
+elements.recipe.addEventListener('click', event => {
+    if(event.target.matches('.btn-decrease, .btn-decrease *')) {
+        if(state.recipe.servings > 1) {
+            state.recipe.updateServings('dec');
             recipeView.updateServingsIngredients(state.recipe);
         }
-  });
+    } else if(event.target.matches('.btn-increase, .btn-increase *')) {
+        state.recipe.updateServings('inc');
+        recipeView.updateServingsIngredients(state.recipe);
+    } else if(event.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controlList();
+    }
+});
