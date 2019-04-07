@@ -50,12 +50,12 @@ export default class Recipe {
             let objIng;
             if(unitIdx > -1) {
                 // there is a unit
-                const arrCount = arrIng.splice(0, unitIdx); // e.g.: [4, 1/2] or [4]
+                const arrCount = arrIng.splice(0, unitIdx); // e.g.: [4, 1/2] or [4] or [1-1/3]
                 let count;
                 if(arrCount.length > 1) {
-                    count = eval(arrCount[0].replace('-', '+')); //replace added to cover another edge case
-                } else {
                     count = eval(arrCount.join('+'));
+                } else {
+                    count = eval(arrCount[0].replace('-', '+')); //replace added to cover last case
                 }
 
                 const unit = arrIng.splice(0, 1)[0];

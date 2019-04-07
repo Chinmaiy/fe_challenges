@@ -40,6 +40,17 @@ const getMockRecipes = query => {
                     "source_url": "http://allrecipes.com/Recipe/Zesty-Slow-Cooker-Chicken-Barbecue/Detail.aspx",
                     "image_url": "http://static.food2fork.com/4515542dbb.jpg",
                     "page":1
+                },
+                {
+                    "recipe_id": 46956,
+                    "publisher": "thepioneerwoman.com",
+                    "social_rank": 100.0, 
+                    "f2f_url": "https://www.food2fork.com/view/Deep_Dish_Fruit_Pizza/46956", 
+                    "publisher_url": "http://thepioneerwoman.com", 
+                    "title": "Deep Dish Fruit Pizza", 
+                    "source_url": "http://thepioneerwoman.com/cooking/2012/01/fruit-pizza/",
+                    "image_url": "http://static.food2fork.com/fruitpizza9a19.jpg",
+                    "page":1
                 }
             ];
             resolve(recipes);
@@ -113,6 +124,35 @@ const getMockRecipe = id => {
                         "1/2 cup Italian salad dressing",
                         "1/4 cup brown sugar",
                         "2 tablespoons Worcestershire sauce"
+                    ]
+                }; break;
+                case 46956: recipe = {
+                    "recipe_id": 46956,
+                    "publisher": "thepioneerwoman.com",
+                    "social_rank": 100.0, 
+                    "f2f_url": "https://www.food2fork.com/view/Deep_Dish_Fruit_Pizza/46956", 
+                    "publisher_url": "http://thepioneerwoman.com", 
+                    "title": "Deep Dish Fruit Pizza", 
+                    "source_url": "http://thepioneerwoman.com/cooking/2012/01/fruit-pizza/",
+                    "image_url": "http://static.food2fork.com/fruitpizza9a19.jpg",
+                    "ingredients": [
+                        "1-1/3 cup Shortening (may Substitute Butter)",
+                        "1-1/2 cup Sugar",
+                        "1 teaspoon Orange Zest",
+                        "1 teaspoon Vanilla",
+                        "2 whole Eggs",
+                        "8 teaspoons Whole Milk",
+                        "4 cups All-purpose Flour",
+                        "3 teaspoons Baking Powder",
+                        "1/2 teaspoon Salt",
+                        "2 jars (13 Ounces Each) Marshmallow Creme",
+                        "2 packages (8 Ounces Each) Cream Cheese",
+                        "Peaches",
+                        "Kiwi Fruit",
+                        "Blueberries",
+                        "Pears",
+                        "Raspberries",
+                        "Other Fruit Optional"
                     ]
                 }; break;
             }
