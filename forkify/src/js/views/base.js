@@ -5,7 +5,9 @@ export const elements = {
     searchResList: document.querySelector('.results__list'),
     searchResPages: document.querySelector('.results__pages'),
     recipe: document.querySelector('.recipe'),
-    shoppingList: document.querySelector('.shopping__list')
+    shoppingList: document.querySelector('.shopping__list'),
+    likesMenu: document.querySelector('.likes__field'), //the heart in the nav
+    likesList: document.querySelector('.likes__list')
 };
 
 export const elementsStrings = {
@@ -37,4 +39,18 @@ export const renderLoader = parentElement => {
 export const removeLoader = () => {
     const loader = document.querySelector(`.${elementsStrings.loader}`);
     removeSelf(loader);
+};
+
+export const limitRecipeTitle = (title, limit = 17) => {
+    if(title.length > limit) {
+        const newTitle = title.split(' ')
+            .reduce((acc, curr) => {
+                if(acc.length + curr.length + 1 <= 17) {
+                   return `${acc} ${curr}`; 
+                }
+                return acc;
+            }, '');
+        return `${newTitle} ...`;
+    }
+    return title;
 };

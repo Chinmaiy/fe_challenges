@@ -1,20 +1,6 @@
-import { elements, clear } from './base';
+import { elements, clear, limitRecipeTitle } from './base';
 
 export const getInput = () => elements.searchInput.value;
-
-const limitRecipeTitle = (title, limit = 17) => {
-    if(title.length > limit) {
-        const newTitle = title.split(' ')
-            .reduce((acc, curr) => {
-                if(acc.length + curr.length + 1 <= 17) {
-                   return `${acc} ${curr}`; 
-                }
-                return acc;
-            }, '');
-        return `${newTitle} ...`;
-    }
-    return title;
-};
 
 const renderRecipe = recipe => {
     const markup = `
@@ -88,5 +74,5 @@ export const highlightSelected = id => {
     [...document.querySelectorAll('.results__link')].forEach(el => {
         el.classList.remove('results__link--active');
     });
-    document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active');
+    document.querySelector(`.results__link[href="#${id}"]`).classList.add('results__link--active');
 };
