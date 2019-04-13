@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+
+* {
+	vertical-align: baseline;
+	font-weight: inherit;
+	font-family: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	border: 0 none;
+	outline: 0;
+	padding: 0;
+	margin: 0;
+}
+
+:root {
+    --white: #FAFAFA;
+    --dark-white: #ecf0f1;
+    --light-grey: #bdc3c7;
+    --dark-grey: #95a5a6;
+    --darker-grey: #7f8c8d;
+    --purple: #BA68C8;
+    --darker-purple: #9C27B0;
+    --darkest-red: #d50000;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header, .footer {
+    height: 10vh;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+    font-size: 38px;
+    font-weight: bold;
+    padding: 0 20px;
+    background: linear-gradient(to bottom right, var(--dark-grey), var(--darker-grey));
+    box-shadow: 0px 4px 3px -1px rgba(0,0,0,0.75);
+} 
+
+.header-btns > * {
+    cursor: pointer;
+}
+
+.user-info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer {
+    height: 5vh;
+    font-size: 16px;
+    justify-content: flex-end;
+    font-weight: 200;
+}
+
+.content {
+    height: 85vh;
+    display: flex;
+    flex: 1;
+    background: var(--white);
+    color: #000;
+}
+
+.sidebar {
+    width: 10rem;
+    background: var(--dark-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.expressions-operations-container {
+    background: var(--white);
+    height: 90%;
+    width: 80%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0px -1px 1px rgba(0, 0, 0, .3);
+    overflow-y: auto;
+}
+
+.expressions-operations-container .expression-operation {
+    margin: 10px auto;
+    cursor: pointer;
+}
+
+.expression-operation {
+    width: 100px;
+    height: 70px;
+    /* background: linear-gradient(to bottom right, var(--purple), var(--darker-purple)); */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0px 2px 4px 1px rgba(0, 0, 0, .3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.parenthesis {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.expression-builder-container {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.expression-builder {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.expression-operation-wrapper {
+    position: relative;
+    margin: 4px;
+    height: 70px;
+}
+
+.expression-operation-wrapper .expression-operation {
+    background: transparent;
+}
+
+.expression-delete-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    color: var(--darkest-red);
+    font-weight: bold;
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    display: none;
+}
+
+.expression-delete-btn:focus { outline: none; }
+.expression-delete-btn:active { transform: translateY(2px); }
+
+.expression-operation-wrapper:hover .expression-delete-btn { display: block; }
+.expression-operation-wrapper:hover { color: var(--darker-grey); }
+/* MISC */
+
+.moving-border {
+    background-image: 
+        linear-gradient(90deg, var(--purple) 50%, transparent 50%), 
+        linear-gradient(90deg, var(--purple) 50%, transparent 50%), 
+        linear-gradient(0deg, var(--purple) 50%, transparent 50%), 
+        linear-gradient(0deg, var(--purple) 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: 15px 2px, 15px 2px, 2px 15px, 2px 15px;
+    background-position: left top, right bottom, left bottom, right   top;
+    animation: border-dance 1s infinite linear;
+}
+    @keyframes border-dance {
+        0% {
+            background-position: left top, right bottom, left bottom, right   top;
+        }
+        100% {
+            background-position: left 15px top, right 15px bottom , left bottom 15px , right   top 15px;
+        }
+}
