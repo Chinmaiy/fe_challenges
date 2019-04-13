@@ -11,10 +11,14 @@ const operations = {
     minus: '<i class="fas fa-minus"></i>',
     multiply:  '<i class="fas fa-times"></i>',
     divide: '<i class="fas fa-divide"></i>',
-    constant: '<i class="fas fa-question"></i>',
+    constant: '<input type="number" class="expression-constant-value" placeholder="Value">',
     equals: '<i class="fas fa-equals"></i>',
     lte: '<i class="fas fa-less-than-equal"></i>',
     gte: '<i class="fas fa-greater-than-equal"></i>'
+}
+
+const getTime = () => {
+    return (new Date()).toLocaleTimeString();
 }
 
 const isParenthesis = operation => {
