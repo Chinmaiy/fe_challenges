@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SeasonsApp from './seasons/SeasonsApp';
+import PicsApp from './pics/components/PicsApp';
 
 ReactDOM.render(
-    <SeasonsApp />,
+    <PicsApp />,
     document.querySelector('#root')
 );
