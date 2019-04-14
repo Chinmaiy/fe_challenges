@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CommentsApp from './comments/CommentsApp';
+import SeasonsApp from './seasons/SeasonsApp';
 
 ReactDOM.render(
-    <CommentsApp />,
+    <SeasonsApp />,
     document.querySelector('#root')
 );
