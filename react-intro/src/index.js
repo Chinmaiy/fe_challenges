@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PicsApp from './pics/components/PicsApp';
+import App from './videos/components/App';
 
 ReactDOM.render(
-    <PicsApp />,
+    <App />,
     document.querySelector('#root')
 );
