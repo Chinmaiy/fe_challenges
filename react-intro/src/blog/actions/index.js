@@ -1,4 +1,5 @@
 import jsonPlaceholder from '../apis/jsonPlaceholder';
+import _ from 'lodash';
 
 /**
  * because of the way babel transpiles async/await syntax 
@@ -41,6 +42,23 @@ import jsonPlaceholder from '../apis/jsonPlaceholder';
   * Invokes them with the dispatch and getState functions which are passed as arguments to dispatch manually an action
   * (i.e. after the requests finishes)
   */
+
+  /**
+   * Whenever an action creator calls an action creator it needs to dispatch the result of calling it.
+   */
+  export const fetchPostsAndUsers = () => async (dispatch, getState) => {
+      await dispatch(fetchPosts()); //make sure the API request completes i.e. posts are available in state
+
+      //const userIds = _.uniq(_.map(getState().posts, 'userId'));
+      //userIds.forEach(id => dispatch(fetchUser(id))); //do not need, in this case, to wait for the responses
+
+      //refactor above with lodash
+      _.chain(getState().posts)
+        .map('userId') //the result of previous call is past as the first arguments to this next function
+        .uniq()
+        .forEach(id => dispatch(fetchUser(id)))
+        .value();
+  };
 
  export const fetchPosts = () => async dispatch => {
     const response = await jsonPlaceholder.get('/posts');
