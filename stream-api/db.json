@@ -21,6 +21,12 @@
       "description": "stream created after adding programmatic navingation",
       "userId": "103052166291901722446",
       "id": 4
+    },
+    {
+      "title": "Stream X",
+      "description": "Change by a patch request",
+      "userId": "103052166291901722446",
+      "id": 5
     }
   ]
 }

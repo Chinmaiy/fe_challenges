@@ -1,6 +1,8 @@
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchStream } from '../../actions';
+import { fetchStream, editStream } from '../../actions';
+import StreamForm from './StreamForm';
 
 /**
  * Every route/every component needs to fetch its own data 
@@ -15,6 +17,12 @@ class StreamEdit extends React.Component {
         this.props.fetchStream(this.props.match.params.id);
     }
 
+    //here formValues should contain only allowed changes from the form to send forward to the API
+    //that's why _.pick is used when passing initial values for the form
+    onSubmit = (formValues) => {
+        this.props.editStream(this.props.match.params.id, formValues);
+    }
+
     render() {
 
         if(!this.props.stream) {
@@ -22,8 +30,13 @@ class StreamEdit extends React.Component {
         }
 
         return (
+            //initialValues is a prop from redux-form used to pre-populate a form
             <div>
-                
+                <h3>Edit the Stream</h3>
+                <StreamForm 
+                    initialValues={_.pick(this.props.stream, 'title', 'description')}
+                    onSubmit={this.onSubmit}
+                />
             </div>
         );
     };
@@ -35,4 +48,4 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-export default connect(mapStateToProps, { fetchStream })(StreamEdit);
+export default connect(mapStateToProps, { fetchStream, editStream })(StreamEdit);
