@@ -43,8 +43,8 @@
         positioned's z-index and because it occurs after it in the html structure sidebar appears on top
     -->
     <!-- in a React app it will hard to change the style of the parent to display the modal correctly 
-        possible fix: make the Modal component display as a child of the body, not of the component that actually triggers its display
-        => Portal
+        possible fix: make the Modal component display as a separate child of the body (not instead of root), not of the component that actually triggers its display
+        => Portal (used whenever you want to render some React component in some html that was not created by your React app)
     -->
     <div class="positioned">
         <div class="modal">
