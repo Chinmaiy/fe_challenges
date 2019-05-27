@@ -9,6 +9,12 @@
       "title": "Stream 2",
       "description": "second stream created",
       "id": 2
+    },
+    {
+      "title": "Stream 3",
+      "description": "Stream created while logged in",
+      "userId": "103052166291901722446",
+      "id": 3
     }
   ]
 }
