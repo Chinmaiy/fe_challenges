@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Menu } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+
 import Profile from './Profile';
+
+import { leftMenuClicked } from '../../actions';
 
 class LeftMenu extends React.Component {
 
-    state = {
-        activeItem: null
-    }
-
     render() {
-        const { activeItem } = this.state;
+        const { activeItem } = this.props;
 
         return (
-            <Menu vertical fixed="left" stackable>
+            <Menu vertical fixed="left" color="teal">
 
                 <Menu.Item>
                     <Profile
@@ -26,13 +26,16 @@ class LeftMenu extends React.Component {
                 <Menu.Item>
                     Courses
                     <Menu.Menu>
-                        <Menu.Item
-                            name='all'
-                            active={activeItem === 'all'}
-                            onClick={this.handleItemClick}
-                        >
-                            All
-                        </Menu.Item>
+
+                        <Link to="/courses">
+                            <Menu.Item
+                                name='all'
+                                active={activeItem === 'all'}
+                                onClick={this.handleItemClick}
+                            >
+                                All
+                            </Menu.Item>
+                        </Link>
 
                         <Menu.Item name='own' active={activeItem === 'own'} onClick={this.handleItemClick}>
                             Own
@@ -44,14 +47,15 @@ class LeftMenu extends React.Component {
     }
 
     handleItemClick = (e, { name }) => {
-        this.setState({ activeItem: name })
+        this.props.leftMenuClicked(name);
     }
 }
 
 const mapStateToProps = state => {
     return {
-        userInfo: state.userInfo
+        userInfo: state.userInfo,
+        activeItem: state.leftMenu.activeItem
     }
 }
 
-export default connect(mapStateToProps, null)(LeftMenu);
+export default connect(mapStateToProps, { leftMenuClicked })(LeftMenu);

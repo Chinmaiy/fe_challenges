@@ -1,3 +1,6 @@
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
+
+export const LEFT_MENU_CLICK = 'LEFT_MENU_CLICK';
+export const GET_COURSES_SUCCESS = 'GET_COURSES_SUCCESS';

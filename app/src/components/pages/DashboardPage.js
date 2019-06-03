@@ -1,21 +1,24 @@
 import React from 'react';
-import Container from '../Container';
 import LeftMenu from '../common/LeftMenu';
 
-class DashboardPage extends React.Component {
+export class DashboardPage extends React.Component {
 
     render() {
         return (
-            <Container>
-                <LeftMenu>
-
-                </LeftMenu>
-                <Container>
-                    DashboardPage
-                </Container>
-            </Container>
+            <div>
+                <LeftMenu />
+                <div className="right-container">
+                    {this.props.children}
+                </div>
+            </div>
         );
     }
 }
 
-export default DashboardPage;
+export const renderWithDashboard = (component) => props => {
+    return (
+        <DashboardPage>
+            {component}
+        </DashboardPage>
+    );
+}

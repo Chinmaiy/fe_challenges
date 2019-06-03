@@ -2,10 +2,11 @@ import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
-import DashboardPage from './pages/DashboardPage';
+import { DashboardPage, renderWithDashboard } from './pages/DashboardPage';
 
 import history from '../history';
 import PrivateRoute from './PrivateRoute';
+import CourseGrid from './courses/CourseGrid';
 
 class App extends React.Component {
 
@@ -13,8 +14,9 @@ class App extends React.Component {
         return (
             <Router history={history}>
                 <Switch>
-                    <PrivateRoute path="/" exact component={DashboardPage}/>
                     <Route path="/login" exact component={LoginPage}/>
+                    <PrivateRoute path="/courses" exact component={renderWithDashboard(<CourseGrid/>)}/>
+                    <PrivateRoute path="/" exact component={DashboardPage}/>
                 </Switch>
             </Router>
         );

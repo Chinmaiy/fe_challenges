@@ -12,3 +12,7 @@
     align-content: center;
     align-items: center;
 }
+
+.right-container {
+    padding: 20px 20px 20px 230px;
+}

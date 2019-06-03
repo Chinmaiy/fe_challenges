@@ -12,7 +12,8 @@ class LoginPage extends React.Component {
 
     render() {
         if(this.props.isSignedIn) {
-            return <Redirect to="/"/>
+            const prevLocation = this.props.location.state || { from: { pathname: '/' } };
+            return <Redirect to={prevLocation.from.pathname}/>
         }
         return (
             <Container>
