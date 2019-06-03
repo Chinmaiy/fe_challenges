@@ -11,9 +11,8 @@ import { login } from '../../actions';
 class LoginPage extends React.Component {
 
     render() {
-        console.log(this.props);
         if(this.props.isSignedIn) {
-            return <Redirect to="/dashboard"/>
+            return <Redirect to="/"/>
         }
         return (
             <Container>

@@ -13,8 +13,8 @@ class App extends React.Component {
         return (
             <Router history={history}>
                 <Switch>
+                    <PrivateRoute path="/" exact component={DashboardPage}/>
                     <Route path="/login" exact component={LoginPage}/>
-                    <PrivateRoute path="/dashboard" exact component={DashboardPage}/>
                 </Switch>
             </Router>
         );

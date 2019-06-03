@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL } from '../actions/types';
+import { LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from '../actions/types';
 
 const INITIAL_STATE = {
     isSignedIn: null,
@@ -16,9 +16,10 @@ export default (state = INITIAL_STATE, action) => {
                     roles: action.payload.roles 
                 };
         case LOGIN_FAIL:
-            return { ...state,
+        case LOGOUT:
+            return { ...INITIAL_STATE,
                     isSignedIn: false
-                };  
+                };
         default: return state;
     }
 }
