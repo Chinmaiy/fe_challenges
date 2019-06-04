@@ -27,17 +27,22 @@ class LeftMenu extends React.Component {
                     Courses
                     <Menu.Menu>
 
-                        <Link to="/courses">
-                            <Menu.Item
-                                name='all'
-                                active={activeItem === 'all'}
-                                onClick={this.handleItemClick}
-                            >
-                                All
-                            </Menu.Item>
-                        </Link>
+                        <Menu.Item
+                            as={Link}
+                            to='/courses/all'
+                            name='all'
+                            active={activeItem === 'all'}
+                            onClick={this.handleItemClick}
+                        >
+                            All
+                        </Menu.Item>
 
-                        <Menu.Item name='own' active={activeItem === 'own'} onClick={this.handleItemClick}>
+                        <Menu.Item 
+                            as={Link}
+                            to="/courses/own"
+                            name='own' 
+                            active={activeItem === 'own'} 
+                            onClick={this.handleItemClick}>
                             Own
                         </Menu.Item>
                     </Menu.Menu>

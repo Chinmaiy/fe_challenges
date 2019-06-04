@@ -6,7 +6,7 @@ import { DashboardPage, renderWithDashboard } from './pages/DashboardPage';
 
 import history from '../history';
 import PrivateRoute from './PrivateRoute';
-import CourseGrid from './courses/CourseGrid';
+import CourseList from './courses/CourseList';
 
 class App extends React.Component {
 
@@ -15,8 +15,8 @@ class App extends React.Component {
             <Router history={history}>
                 <Switch>
                     <Route path="/login" exact component={LoginPage}/>
-                    <PrivateRoute path="/courses" exact component={renderWithDashboard(<CourseGrid/>)}/>
-                    <PrivateRoute path="/" exact component={DashboardPage}/>
+                    <Route path="/courses/:which" exact component={renderWithDashboard(<CourseList/>)}/>
+                    <Route path="/" exact component={DashboardPage}/>
                 </Switch>
             </Router>
         );

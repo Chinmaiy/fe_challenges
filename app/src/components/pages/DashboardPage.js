@@ -18,7 +18,9 @@ export class DashboardPage extends React.Component {
 export const renderWithDashboard = (component) => props => {
     return (
         <DashboardPage>
-            {component}
+            {
+                React.cloneElement(component, {...props})
+            }
         </DashboardPage>
     );
-}
+};

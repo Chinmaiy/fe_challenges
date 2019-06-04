@@ -44,13 +44,32 @@ export const leftMenuClicked = (leftMenuActiveItem) => {
     };
 }
 
-export const getCourses = () => async dispatch => {
+export const getCourses = async (which) => {
+
+    let payload = null;
+
+    switch(which) {
+        case 'all':
+            payload = [
+                {
+                    id: 1,
+                    name: 'Lorem, ipsum.',
+                    description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos iusto, ea sed eligendi id praesentium?'
+                }
+            ]; break;
+        case 'own':
+            payload = [
+                {
+                    id: 2,
+                    name: 'Owned Course',
+                    description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos iusto, ea sed eligendi id praesentium?'
+                }
+            ]; break;
+        default: 
+    }
 
     //mock api request
     await wait(2000);
 
-    dispatch({
-        type: GET_COURSES_SUCCESS,
-        payload: [] //loaded courses
-    });
+    return payload;
 }

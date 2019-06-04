@@ -7,16 +7,15 @@ class Course extends React.Component {
     render() {
 
         const imgSrc = this.props.imgSrc || '/img/img_na.png';
+        const { name, description } = this.props;
 
         return (
             <Card>
                 <Image src={imgSrc} wrapped ui={false} />
                 <Card.Content>
-                    <Card.Header>Course Name</Card.Header>
+                    <Card.Header>{name}</Card.Header>
                     <Card.Description>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum sint voluptas illum aperiam perspiciatis. 
-                        Asperiores dolores quisquam fugit assumenda molestias veniam, minus exercitationem libero commodi consequatur, 
-                        itaque vitae temporibus deleniti!
+                        {description}
                     </Card.Description>
                     </Card.Content>
             </Card>
