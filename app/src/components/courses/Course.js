@@ -1,8 +1,11 @@
 import React from 'react';
-import { Card, Image} from 'semantic-ui-react';
+import { Card, Image, Button } from 'semantic-ui-react';
 
 class Course extends React.Component {
 
+    state = {
+        enrolled:  false
+    }
 
     render() {
 
@@ -10,16 +13,30 @@ class Course extends React.Component {
         const { name, description } = this.props;
 
         return (
-            <Card>
-                <Image src={imgSrc} wrapped ui={false} />
+            <Card color="teal">
+                <Image size="tiny" src={imgSrc} wrapped ui={false} />
                 <Card.Content>
                     <Card.Header>{name}</Card.Header>
                     <Card.Description>
                         {description}
                     </Card.Description>
-                    </Card.Content>
+                </Card.Content>
+                {
+                    !this.state.enrolled ?
+                        (<Card.Content extra textAlign="center">
+                            <Button color="teal" onClick={this.onEnrollBtnClick}>Enroll</Button>
+                        </Card.Content>) : ''
+                }
+                
             </Card>
         );
+    }
+
+    onEnrollBtnClick = (event, btnProps) => {
+        //make api call wait for success response (could delete from state to not display it anymore)
+        this.setState({
+            enrolled: true
+        });
     }
 }
 
