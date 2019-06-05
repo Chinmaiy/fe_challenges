@@ -15,8 +15,7 @@ class App extends React.Component {
             <Router history={history}>
                 <Switch>
                     <Route path="/login" exact component={LoginPage}/>
-                    <Route path="/courses/:which" exact component={renderWithDashboard(<CourseList/>)}/>
-                    <Route path="/" exact component={DashboardPage}/>
+                    <PrivateRoute component={DashboardPage}/>
                 </Switch>
             </Router>
         );

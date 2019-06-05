@@ -1,5 +1,7 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import LeftMenu from '../common/LeftMenu';
+import CourseList from '../courses/CourseList';
 
 export class DashboardPage extends React.Component {
 
@@ -8,19 +10,13 @@ export class DashboardPage extends React.Component {
             <div>
                 <LeftMenu />
                 <div className="right-container">
-                    {this.props.children}
+                    <Route 
+                        exact
+                        path="/courses/:which(all|own)" 
+                        render={props => (<CourseList which={props.match.params.which} key={props.location.pathname}/>) }
+                    />
                 </div>
             </div>
         );
     }
 }
-
-export const renderWithDashboard = (component) => props => {
-    return (
-        <DashboardPage>
-            {
-                React.cloneElement(component, {...props, key: props.location.pathname } )
-            }
-        </DashboardPage>
-    );
-};

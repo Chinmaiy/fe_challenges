@@ -10,11 +10,10 @@ class CourseList extends React.Component {
     };
 
     async componentDidMount() {
-        const which = this.props.match.params.which;
-        const courses = await getCourses(which);
+        const courses = await getCourses(this.props.which);
         this.setState({
             courses
-        })
+        });
     }
 
     render() {
