@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Image, Button } from 'semantic-ui-react';
+import { toast } from 'react-semantic-toasts';
 
 class Course extends React.Component {
 
@@ -33,6 +34,14 @@ class Course extends React.Component {
     }
 
     onEnrollBtnClick = (event, btnProps) => {
+        toast({
+            title: 'Enrolled',
+            type: 'info',
+            color: 'teal',
+            size: 'small',
+            time: 5000,
+            animation: 'slide left'
+        });
         //make api call wait for success response (could delete from state to not display it anymore)
         this.setState({
             enrolled: true

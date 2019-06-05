@@ -18,3 +18,14 @@
     width: 100%;
     padding: 20px 20px 20px 230px;
 }
+
+.bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 1rem;
+}
+
+.small-size {
+    min-width: 320px;
+}
