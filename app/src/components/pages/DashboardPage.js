@@ -6,6 +6,7 @@ import CourseList from '../courses/CourseList';
 export class DashboardPage extends React.Component {
 
     render() {
+        console.log(this.props);
         return (
             <React.Fragment>
                 <LeftMenu />
@@ -13,7 +14,7 @@ export class DashboardPage extends React.Component {
                     <Route
                         exact
                         path="/courses/:which(all|own)" 
-                        render={props => (<CourseList which={props.match.params.which} key={props.location.pathname}/>) }
+                        render={props => (<CourseList which={props.match.params.which} key={props.location.key}/>) }
                     />
                 </div>
             </React.Fragment>
