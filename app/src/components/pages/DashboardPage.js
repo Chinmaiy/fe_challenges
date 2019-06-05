@@ -7,16 +7,16 @@ export class DashboardPage extends React.Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <LeftMenu />
                 <div className="right-container">
-                    <Route 
+                    <Route
                         exact
                         path="/courses/:which(all|own)" 
                         render={props => (<CourseList which={props.match.params.which} key={props.location.pathname}/>) }
                     />
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

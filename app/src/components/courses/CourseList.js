@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card } from 'semantic-ui-react';
+import { Card, Dimmer, Loader, Segment } from 'semantic-ui-react';
 import Course from './Course';
+import Spinner from '../common/Spinner';
 import { getCourses } from '../../actions';
 
 class CourseList extends React.Component {
@@ -19,9 +20,7 @@ class CourseList extends React.Component {
     render() {
 
         if(this.state.courses === null) {
-            return (
-                <div>Loading...</div>
-            );
+            return <Spinner/>
         }
 
         //TODO add pagination ?
