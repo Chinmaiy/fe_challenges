@@ -1,8 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Card } from 'semantic-ui-react';
 import Course from './Course';
-import { leftMenuClicked, getCourses } from '../../actions';
+import { getCourses } from '../../actions';
 
 class CourseList extends React.Component {
 
@@ -12,7 +11,6 @@ class CourseList extends React.Component {
 
     async componentDidMount() {
         const which = this.props.match.params.which;
-        leftMenuClicked(which);
         const courses = await getCourses(which);
         this.setState({
             courses

@@ -19,7 +19,7 @@ export const renderWithDashboard = (component) => props => {
     return (
         <DashboardPage>
             {
-                React.cloneElement(component, {...props})
+                React.cloneElement(component, {...props, key: props.location.pathname } )
             }
         </DashboardPage>
     );
