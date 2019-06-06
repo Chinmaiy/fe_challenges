@@ -1,20 +1,24 @@
 import React from 'react';
-import { Segment, Label, Header } from 'semantic-ui-react';
-
-import _ from 'lodash';
+import { Segment, Label, Header, Popup } from 'semantic-ui-react';
 
 import { getGradesCardData } from '../../actions';
 import Spinner from '../common/Spinner';
 
-const LabeledInfo = ({ label, detail, value }) => (
-
-    <Header as="h1">
-        <Label size="medium" color='teal' pointing='right'>
+const LabeledInfo = ({ label, detail, value }) => {
+    let labelNode = 
+        <Label detail={detail} size="medium" color='teal' pointing='right'>
             {label}
-        </Label>
-        {value}
-    </Header>
-);
+        </Label>;
+    if(detail) {
+        labelNode = <Popup content={detail} trigger={labelNode} />;
+    }
+    return (
+        <Header as="h1">
+            {labelNode}
+            {value}
+        </Header>
+    );
+}
 
 class GradesCard extends React.Component {
 
@@ -37,13 +41,11 @@ class GradesCard extends React.Component {
 
         return (
             <Segment compact raised>
-                <Label color='red' ribbon>
+                <Label color='blue' ribbon>
                     {this.state.courseName}
                 </Label>
 
-                
-
-                {this.state.data.map(component => <LabeledInfo key={component.name} label={component.name} value={component.value}/>)}
+                {this.state.data.map(component => <LabeledInfo key={component.name} detail={component.formula} label={component.name} value={component.value}/>)}
             </Segment>
         );
     }
