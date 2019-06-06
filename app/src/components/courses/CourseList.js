@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'semantic-ui-react';
+import { Card, Grid } from 'semantic-ui-react';
 import Course from './Course';
 import Spinner from '../common/Spinner';
 import { getCourses } from '../../actions';
@@ -23,18 +23,18 @@ class CourseList extends React.Component {
             return <Spinner/>
         }
 
-        //TODO add pagination ?
         return (
-            <Card.Group itemsPerRow="4">
-
+            <Grid stackable container columns={16} >
                 {this.state.courses.map(course => 
-                    <Course
-                            key={course.id}
-                            name={course.name}
-                            description={course.description}
-                    />
+                    <Grid.Column mobile={16} tablet={8} computer={4} key={course.id}>
+                        <Course
+                                key={course.id}
+                                name={course.name}
+                                description={course.description}
+                        />
+                    </Grid.Column>
                 )}
-            </Card.Group>
+            </Grid>
         );
     }
 }

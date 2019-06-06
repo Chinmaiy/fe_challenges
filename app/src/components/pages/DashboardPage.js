@@ -8,7 +8,6 @@ import ToastContainer from '../common/ToastContainer';
 export class DashboardPage extends React.Component {
 
     render() {
-        console.log(this.props);
         return (
             <React.Fragment>
                 <LeftMenu />

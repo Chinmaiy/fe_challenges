@@ -55,6 +55,26 @@ export const getCourses = async (which) => {
                     id: 1,
                     name: 'Lorem, ipsum.',
                     description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos iusto, ea sed eligendi id praesentium?'
+                },
+                {
+                    id: 2,
+                    name: 'Lorem, ipsum.',
+                    description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos iusto, ea sed eligendi id praesentium?'
+                },
+                {
+                    id: 3,
+                    name: 'Lorem, ipsum.',
+                    description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos iusto, ea sed eligendi id praesentium?'
+                },
+                {
+                    id: 4,
+                    name: 'Lorem, ipsum.',
+                    description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos iusto, ea sed eligendi id praesentium?'
+                },
+                {
+                    id: 5,
+                    name: 'Lorem, ipsum.',
+                    description: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dignissimos iusto, ea sed eligendi id praesentium?'
                 }
             ]; break;
         case 'own':
