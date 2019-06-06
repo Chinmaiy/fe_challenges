@@ -11,6 +11,7 @@ class CourseList extends React.Component {
     };
 
     async componentDidMount() {
+        console.log(this.props);
         const courses = await getCourses(this.props.which);
         this.setState({
             courses
@@ -28,6 +29,7 @@ class CourseList extends React.Component {
                 {this.state.courses.map(course => 
                     <Grid.Column mobile={16} tablet={8} computer={4} key={course.id}>
                         <Course
+                                courseId={course.id}
                                 key={course.id}
                                 name={course.name}
                                 description={course.description}

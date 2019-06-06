@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, Image, Button } from 'semantic-ui-react';
 import { toast } from 'react-semantic-toasts';
+import { enroll } from '../../actions';
 
 class Course extends React.Component {
 
@@ -11,7 +13,7 @@ class Course extends React.Component {
     render() {
 
         const imgSrc = this.props.imgSrc || '/img/img_na.png';
-        const { name, description } = this.props;
+        const { courseId, name, description } = this.props;
 
         return (
             <Card color="teal">
@@ -23,29 +25,37 @@ class Course extends React.Component {
                     </Card.Description>
                 </Card.Content>
                 {
-                    !this.state.enrolled ?
-                        (<Card.Content extra textAlign="center">
-                            <Button color="teal" onClick={this.onEnrollBtnClick}>Enroll</Button>
-                        </Card.Content>) : ''
+                    
+                    <Card.Content extra textAlign="center">
+                            <Button as={Link} to={`/courses/${courseId}/grades`} color="teal">View</Button> 
+                            { !this.state.enrolled ? (
+                                <Button color="teal" onClick={this.onEnrollBtnClick}>Enroll</Button> 
+                            ) : ''}
+                            
+                    </Card.Content> 
                 }
                 
             </Card>
         );
     }
 
-    onEnrollBtnClick = (event, btnProps) => {
+    onEnrollBtnClick = async (event, btnProps) => {
+        const { error, enrolled } = await enroll(this.props.courseId);
+        //make api call wait for success response (could delete from state to not display it anymore)
+
         toast({
-            title: 'Enrolled',
-            type: 'info',
-            color: 'teal',
+            title: `${error ? 'Not ' : ''}Enrolled`,
+            type: error ? 'error' : 'info',
+            color: error ? 'red' : 'teal',
             size: 'small',
             time: 5000,
             animation: 'slide left'
         });
-        //make api call wait for success response (could delete from state to not display it anymore)
-        this.setState({
-            enrolled: true
-        });
+        if(enrolled) {
+            this.setState({
+                enrolled
+            });
+        }
     }
 }
 
