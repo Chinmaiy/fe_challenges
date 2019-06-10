@@ -6,7 +6,7 @@ import Spinner from '../common/Spinner';
 
 const LabeledInfo = ({ label, detail, value }) => {
     let labelNode = 
-        <Label detail={detail} size="medium" color='teal' pointing='right'>
+        <Label size="big" color='teal' pointing='right'>
             {label}
         </Label>;
     if(detail) {
