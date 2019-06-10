@@ -6,6 +6,7 @@ import CourseList from '../courses/CourseList';
 import ToastContainer from '../common/ToastContainer';
 import GradesTable from '../courses/GradesTable';
 import GradesCard from '../courses/GradesCard';
+import CreateCourse from '../courses/CreateCourse';
 
 export class DashboardPage extends React.Component {
 
@@ -24,6 +25,13 @@ export class DashboardPage extends React.Component {
                         path="/courses/:id([0-9]+)/grades"
                         render={props => <GradesCard courseId={props.match.params.id} key={props.location.key}/> }
                     />
+                    <Route
+                        exact
+                        path="/courses/create"
+                        render={props => <CreateCourse key={props.location.key}/> }
+                    >
+
+                    </Route>
                     <ToastContainer />
                 </div>
             </React.Fragment>

@@ -10,8 +10,7 @@ import { leftMenuClicked } from '../../actions';
 class LeftMenu extends React.Component {
 
     render() {
-        const { activeItem } = this.props;
-
+    
         return (
             <Menu vertical fixed="left" color="teal">
 
@@ -27,16 +26,33 @@ class LeftMenu extends React.Component {
                     Courses
                     <Menu.Menu>
 
-                        <Menu.Item
-                            as={Link}
-                            to='/courses/all'
-                            name='all'
-                            active={activeItem === 'all'}
-                            onClick={this.handleItemClick}
-                        >
-                            All
-                        </Menu.Item>
+                        {this.renderCoursesMenuItems()}
+                        
+                    </Menu.Menu>
+                </Menu.Item>
+            </Menu>
+        );
+    }
 
+    renderCoursesMenuItems() {
+        const { roles } = this.props.userInfo;
+        const { activeItem } = this.props;
+
+        const menuItems = [];
+        menuItems.push(
+            <Menu.Item
+                as={Link}
+                to='/courses/all'
+                name='all'
+                active={activeItem === 'all'}
+                onClick={this.handleItemClick}
+            >
+                All
+            </Menu.Item>);
+
+        if(roles && roles.includes("student")) {
+
+            menuItems.push(
                         <Menu.Item 
                             as={Link}
                             to="/courses/own"
@@ -44,11 +60,41 @@ class LeftMenu extends React.Component {
                             active={activeItem === 'own'} 
                             onClick={this.handleItemClick}>
                             Own
-                        </Menu.Item>
-                    </Menu.Menu>
+                        </Menu.Item>);
+        }
+
+        if(roles && roles.includes("professor")) {
+            const userId = this.props.userInfo.id;
+            menuItems.push(
+                <Menu.Item
+                    as={Link}
+                    to={`/courses?createdBy=${userId}`}
+                    name='own'
+                    active={activeItem === 'own'}
+                    onClick={this.handleItemClick}
+                >
+                    Own
                 </Menu.Item>
-            </Menu>
-        );
+            );
+            
+            menuItems.push(
+                <Menu.Item
+                    as={Link}
+                    to={`/courses/create`}
+                    name='create-course'
+                    active={activeItem === 'create-course'}
+                    onClick={this.handleItemClick}
+                >
+                    Create
+                </Menu.Item>
+            );
+        }
+
+        return (
+            <React.Fragment>
+                {menuItems}
+            </React.Fragment>
+        )
     }
 
     handleItemClick = (e, { name }) => {

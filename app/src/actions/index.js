@@ -19,6 +19,7 @@ export const login = ({ email, password }) => async dispatch => {
     dispatch({
         type: LOGIN_SUCCESS,
         payload: {
+            id: 12345,
             name: 'Chinmaiy',
             roles: ['student']
         }
