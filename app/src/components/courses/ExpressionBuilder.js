@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { Segment, Icon, Divider } from 'semantic-ui-react';
+import { Segment, Icon, Divider, Header } from 'semantic-ui-react';
 import uniqid from 'uniqid';
 import { AddableItem, DeleteableItemList } from '../generics';
-
-//variables = [ { id: ..., name: ..., detail: ... } ] //details will be displayed as tooltip if present
 
 const Operations = () => {
 
@@ -12,27 +10,46 @@ const Operations = () => {
     );
 };
 
-const ExpressionBuilder = ({ namePlaceholder, variables, onAddExpression, onDeleteItem }) => {
+//variables = [ { id: ..., name: ..., detail: ... } ] //details will be displayed as tooltip if present
+//expression = [ { id: ..., item: {...}}]
+
+const ExpressionBuilder = ({ expressionNamePlaceholder, variablesHeader, variables, onAddExpression, onDeleteVariable }) => {
 
     const [ expression, setExpression ] = useState([]);
 
+    const internalOnAddExpression = item => {
+        onAddExpression(item.name, expression);
+        setExpression([]);
+    }
+
+    const onDeleteExpressionElem = item => setExpression(expression.filter(elem => elem.id !== item.id));
+
+    const internalOnDeleteVariable = variable => {
+        setExpression(expression.filter(elem => elem.item.id !== variable.id));
+        onDeleteVariable(variable);
+    };
+
+    const onClickVariable = variable => setExpression([ ...expression, { id: uniqid(), item: { ...variable, type: 'var' } }]);
+    
+    const onAddConstantValue = constant => setExpression([ ...expression, { id: uniqid(), item: { ...constant, type: 'const' }}]);
 
     return (
         <Segment.Group>
             <Segment>
-                <AddableItem placeholder={namePlaceholder}/>
+                <AddableItem placeholder={expressionNamePlaceholder} onAddItem={internalOnAddExpression}/>
             </Segment>
             <Segment>
-                <DeleteableItemList horizontal nested items={expression} />
+                <DeleteableItemList horizontal nested items={expression} onDeleteItem={onDeleteExpressionElem}/>
             </Segment>
             <Segment.Group horizontal>
                 <Segment>
-                    <DeleteableItemList items={variables} />
+                    <Header color="teal" as="h3">{variablesHeader}</Header>
+                    <DeleteableItemList items={variables} onDeleteItem={internalOnDeleteVariable} onClickItem={onClickVariable}/>
                 </Segment>
                 <Segment>
                     <Operations />
                     <Divider />
-                    <AddableItem type="number" placeholder="Constant Value"  />
+                    <AddableItem type="number" placeholder="Number" onAddItem={onAddConstantValue}/>
                 </Segment>
             </Segment.Group>
         </Segment.Group>

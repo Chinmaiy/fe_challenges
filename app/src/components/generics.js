@@ -29,9 +29,9 @@ export const AddableItem = ({ placeholder = '', onAddItem, ...rest }) => {
     );
 };
 
-export const DeleteableItem = ({ item, onDeleteItem, onClickItem }) => {
+export const DeleteableItem = ({ item, nested, onDeleteItem, onClickItem }) => {
 
-    const { name, detail } = item;
+    const { name, detail } = nested ? item.item : item;
 
     let itemProps = {
         'color': 'teal',
@@ -58,13 +58,13 @@ export const DeleteableItem = ({ item, onDeleteItem, onClickItem }) => {
     return labelNode;
 };
 
-export const DeleteableItemList = ({ items, horizontal = false, nested = false, ...rest }) => {
+export const DeleteableItemList = ({ items, horizontal = false, ...rest }) => {
 
     return (
         <List horizontal={horizontal}>
             {items.map(item => 
                 <List.Item key={item.id}>
-                    <DeleteableItem item={nested ? item.item : item} { ...rest }/>
+                    <DeleteableItem item={item} { ...rest }/>
                 </List.Item>
             )}
         </List>

@@ -61,10 +61,11 @@ class CreateCourse extends React.Component {
                     onClickItem={this.onClickItem}
                 />,
             2: <ExpressionBuilder 
-                    namePlaceholder="Component Name"
+                    expressionNamePlaceholder="Component Name"
+                    variablesHeader="Created Components"
                     variables={this.state.courseComponents}
-                    onDeleteItem={this.onDeleteItem}
-                    onClickItem={this.onClickItem}
+                    onDeleteVariable={this.onDeleteItem}
+                    onAddExpression={this.onAddExpression}
                 />
         };
 
@@ -79,6 +80,8 @@ class CreateCourse extends React.Component {
                     icon="settings" 
                     content={`Create Course - ${formStepNames[this.state.currentStep]}`}
                 />
+
+                {/*display errors */}
 
                 {steps[this.state.currentStep]}               
 
@@ -97,7 +100,7 @@ class CreateCourse extends React.Component {
     }
 
     onAddItem = (item) => {
-        const course = this.state.courseComponents.find(course => course.id === item.id);
+        const course = this.state.courseComponents.find(course => course.name === item.name);
         if(!course) {
             this.setState({
                 courseComponents: [ ...this.state.courseComponents, { ...item, id: uniqid() } ]
@@ -111,8 +114,19 @@ class CreateCourse extends React.Component {
         });
     }
 
-    onClickItem = (item) => {
-        console.log(item);
+    onAddExpression = (expressionName, expression) => {
+        const course = this.state.courseComponents.find(course => course.name === expressionName);
+        if(!course) {
+            const formula = expression.map(elem => elem.item).reduce((acc, curr) => `${acc} ${curr.name}`, '');
+            const newComponent = {
+                id: uniqid(),
+                name: expressionName,
+                detail: formula
+            };
+            this.setState({
+                courseComponents: [ ...this.state.courseComponents, newComponent ]
+            });
+        }
     }
 
     renderNavigationButtons = () => {
