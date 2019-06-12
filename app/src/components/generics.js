@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { Input, Button, Label, Popup, List, Icon } from 'semantic-ui-react';
 
-export const FlexColumnContainer = ({ children }) => {
+export const FlexColumnContainer = ({ verticalCenter = false, children }) => {
+
+    const extraStyle = {};
+    
+    if(verticalCenter) {
+        extraStyle['justifyContent'] = 'center';
+    }
 
     return (
-        <div className="flex-column-container">
+        <div className="flex-column-container" style={extraStyle}>
             {children}
         </div>
     );

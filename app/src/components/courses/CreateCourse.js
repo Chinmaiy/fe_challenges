@@ -62,7 +62,7 @@ class CreateCourse extends React.Component {
                 />,
             2: <ExpressionBuilder 
                     expressionNamePlaceholder="Component Name"
-                    variablesHeader="Created Components"
+                    variablesHeader="Created Components:"
                     variables={this.state.courseComponents}
                     onDeleteVariable={this.onDeleteItem}
                     onAddExpression={this.onAddExpression}

@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import { Segment, Icon, Divider, Header } from 'semantic-ui-react';
 import uniqid from 'uniqid';
-import { AddableItem, DeleteableItemList } from '../generics';
-
-const Operations = () => {
-
-    return (
-        <div>Operations List</div>
-    );
-};
+import { AddableItem, DeleteableItemList, FlexColumnContainer } from '../generics';
+import OperatorsManager from './OperatorsManager';
 
 //variables = [ { id: ..., name: ..., detail: ... } ] //details will be displayed as tooltip if present
 //expression = [ { id: ..., item: {...}}]
@@ -30,26 +24,30 @@ const ExpressionBuilder = ({ expressionNamePlaceholder, variablesHeader, variabl
     };
 
     const onClickVariable = variable => setExpression([ ...expression, { id: uniqid(), item: { ...variable, type: 'var' } }]);
-    
+
     const onAddConstantValue = constant => setExpression([ ...expression, { id: uniqid(), item: { ...constant, type: 'const' }}]);
 
     return (
         <Segment.Group>
-            <Segment>
+            <Segment padded>
                 <AddableItem placeholder={expressionNamePlaceholder} onAddItem={internalOnAddExpression}/>
             </Segment>
-            <Segment>
+            <Segment padded>
+                <Header color="teal" as="h3">Formula:</Header>
                 <DeleteableItemList horizontal nested items={expression} onDeleteItem={onDeleteExpressionElem}/>
             </Segment>
             <Segment.Group horizontal>
-                <Segment>
+                <Segment padded="very">
                     <Header color="teal" as="h3">{variablesHeader}</Header>
                     <DeleteableItemList items={variables} onDeleteItem={internalOnDeleteVariable} onClickItem={onClickVariable}/>
                 </Segment>
-                <Segment>
-                    <Operations />
-                    <Divider />
-                    <AddableItem type="number" placeholder="Number" onAddItem={onAddConstantValue}/>
+                <Segment padded="very">
+                    <Header color="teal" as="h3">Operators:</Header>
+                    <FlexColumnContainer verticalCenter>
+                        <OperatorsManager />
+                        <Divider />
+                        <AddableItem type="number" placeholder="Number" onAddItem={onAddConstantValue}/>
+                    </FlexColumnContainer>
                 </Segment>
             </Segment.Group>
         </Segment.Group>
