@@ -46,6 +46,7 @@ class CreateCourse extends React.Component {
                     placeholder="Component Name"
                     onAddItem={this.onAddItem}
                     onDeleteItem={this.onDeleteItem}
+                    onClickItem={this.onClickItem}
                 />
         };
 
@@ -90,6 +91,10 @@ class CreateCourse extends React.Component {
         this.setState({
             courseComponents: this.state.courseComponents.filter(course => course.name !== itemName)
         });
+    }
+
+    onClickItem = (itemName) => {
+        console.log(itemName);
     }
 
     renderNavigationButtons = () => {

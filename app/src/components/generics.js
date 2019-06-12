@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Button, Label, Popup, List } from 'semantic-ui-react';
+import { Input, Button, Label, Popup, List, Icon } from 'semantic-ui-react';
 
 export const FlexColumnContainer = ({ children }) => {
 
@@ -27,14 +27,25 @@ export const AddableItem = ({ placeholder = '', onAddItem }) => {
     );
 };
 
-export const DeleteableItem = ({ name, detail, onDeleteItem }) => {
+export const DeleteableItem = ({ name, detail, onDeleteItem, onClickItem }) => {
+
+    let itemProps = {
+        'color': 'teal',
+        'size': 'big'
+    };
+
+    if(onClickItem) {
+        itemProps['onClick'] = () => onClickItem(name);
+    }
 
     let labelNode = <Label
-                        color="teal"
-                        content={name}
-                        onRemove={() => onDeleteItem(name)}
-                        size="big"
-                    />
+                        {...itemProps}
+                    >
+                        {name}
+                        <Icon 
+                            name="delete" onClick={ (event) => { event.stopPropagation(); onDeleteItem(name)} }
+                        />
+                    </Label>
     
     if(detail) {
         labelNode = <Popup content={detail} trigger={labelNode} />;
@@ -43,7 +54,7 @@ export const DeleteableItem = ({ name, detail, onDeleteItem }) => {
     return labelNode;
 };
 
-export const EditableItemList = ({ items=[], placeholder = '', onAddItem, onDeleteItem }) => {
+export const EditableItemList = ({ items=[], placeholder = '', onAddItem, onDeleteItem, onClickItem }) => {
 
     return (
         <FlexColumnContainer>
@@ -51,7 +62,7 @@ export const EditableItemList = ({ items=[], placeholder = '', onAddItem, onDele
             <List>
                 {items.map(item => 
                     <List.Item key={item.name}>
-                        <DeleteableItem name={item.name} detail={item.detail} onDeleteItem={onDeleteItem}/>
+                        <DeleteableItem name={item.name} detail={item.detail} onDeleteItem={onDeleteItem} onClickItem={onClickItem} />
                     </List.Item>
                 )}
             </List>
