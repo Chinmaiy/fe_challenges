@@ -1,8 +1,10 @@
 import React from 'react';
 import { Container, Header, Button, Divider, Input, Label } from 'semantic-ui-react';
 import _ from 'lodash';
+import uniqid from 'uniqid';
 
 import { EditableItemList, FlexColumnContainer } from '../generics';
+import ExpressionBuilder from './ExpressionBuilder';
 
 import history from '../../history';
 
@@ -25,17 +27,27 @@ const CourseBasicInfoForm = ({ onChange }) => {
 class CreateCourse extends React.Component {
 
     state = {
-        currentStep: 0,
+        currentStep: 2,
         courseName: '',
         courseYear: null,
-        courseComponents: []
+        courseComponents: [
+            {
+                id: uniqid(),
+                name: 'Component 1'
+            },
+            {
+                id: uniqid(),
+                name: 'Component 2',
+                detail: 'Component 1 + 1'
+            }
+        ]
     }
 
     maxStepNr;
 
     render() {
 
-        const formStepNames = ["Basic Course Information", "Basic Components"];
+        const formStepNames = ["Basic Course Information", "Basic Components", "Grade Components"];
 
         const steps = {
             0: <CourseBasicInfoForm
@@ -45,6 +57,12 @@ class CreateCourse extends React.Component {
                     items={this.state.courseComponents} 
                     placeholder="Component Name"
                     onAddItem={this.onAddItem}
+                    onDeleteItem={this.onDeleteItem}
+                    onClickItem={this.onClickItem}
+                />,
+            2: <ExpressionBuilder 
+                    namePlaceholder="Component Name"
+                    variables={this.state.courseComponents}
                     onDeleteItem={this.onDeleteItem}
                     onClickItem={this.onClickItem}
                 />
@@ -78,35 +96,35 @@ class CreateCourse extends React.Component {
         });
     }
 
-    onAddItem = (itemName) => {
-        const course = this.state.courseComponents.find(course => course.name === itemName);
+    onAddItem = (item) => {
+        const course = this.state.courseComponents.find(course => course.id === item.id);
         if(!course) {
             this.setState({
-                courseComponents: [ ...this.state.courseComponents, { name: itemName } ]
+                courseComponents: [ ...this.state.courseComponents, { ...item, id: uniqid() } ]
             });
         }
     }
 
-    onDeleteItem = (itemName) => {
+    onDeleteItem = ({ id }) => {
         this.setState({
-            courseComponents: this.state.courseComponents.filter(course => course.name !== itemName)
+            courseComponents: this.state.courseComponents.filter(course => course.id !== id)
         });
     }
 
-    onClickItem = (itemName) => {
-        console.log(itemName);
+    onClickItem = (item) => {
+        console.log(item);
     }
 
     renderNavigationButtons = () => {
 
         return (
             <Container fluid>
-                { this.state.currentStep > 0 ? <Button color="teal" onClick={() => this.setState({ currentStep: --this.state.currentStep })}>Back</Button> : null }
+                { this.state.currentStep > 0 ? <Button color="teal" onClick={() => this.setState({ currentStep: this.state.currentStep - 1})}>Back</Button> : null }
 
                 { 
                     this.state.currentStep === this.maxStepNr ? 
                     <Button color="teal" floated="right" onClick={this.onSaveBtnClick}>Save</Button> :
-                    <Button color="teal" floated="right" onClick={() => this.setState({ currentStep: ++this.state.currentStep })}>Next</Button>
+                    <Button color="teal" floated="right" onClick={() => this.setState({ currentStep: this.state.currentStep + 1 })}>Next</Button>
                 }
                
             </Container>

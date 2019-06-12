@@ -10,11 +10,11 @@ export const FlexColumnContainer = ({ children }) => {
     );
 }
 
-export const AddableItem = ({ placeholder = '', onAddItem }) => {
+export const AddableItem = ({ placeholder = '', onAddItem, ...rest }) => {
 
     const [ inputValue, setInputValue ] = useState('');
 
-    const addBtn = <Button color="teal" content='Add' onClick={() => { onAddItem(inputValue); setInputValue(''); }}/>;
+    const addBtn = <Button color="teal" content='Add' onClick={() => { onAddItem({ name: inputValue }); setInputValue(''); }}/>;
 
     return (
         <Input
@@ -22,12 +22,16 @@ export const AddableItem = ({ placeholder = '', onAddItem }) => {
             placeholder={placeholder}
             value={inputValue}
             size="big"
+            fluid
             onChange={({ target }) => setInputValue(target.value)}
+            {...rest}
         />
     );
 };
 
-export const DeleteableItem = ({ name, detail, onDeleteItem, onClickItem }) => {
+export const DeleteableItem = ({ item, onDeleteItem, onClickItem }) => {
+
+    const { name, detail } = item;
 
     let itemProps = {
         'color': 'teal',
@@ -35,7 +39,7 @@ export const DeleteableItem = ({ name, detail, onDeleteItem, onClickItem }) => {
     };
 
     if(onClickItem) {
-        itemProps['onClick'] = () => onClickItem(name);
+        itemProps['onClick'] = () => onClickItem(item);
     }
 
     let labelNode = <Label
@@ -43,7 +47,7 @@ export const DeleteableItem = ({ name, detail, onDeleteItem, onClickItem }) => {
                     >
                         {name}
                         <Icon 
-                            name="delete" onClick={ (event) => { event.stopPropagation(); onDeleteItem(name)} }
+                            name="delete" onClick={ (event) => { event.stopPropagation(); onDeleteItem(item)} }
                         />
                     </Label>
     
@@ -54,18 +58,25 @@ export const DeleteableItem = ({ name, detail, onDeleteItem, onClickItem }) => {
     return labelNode;
 };
 
+export const DeleteableItemList = ({ items, horizontal = false, nested = false, ...rest }) => {
+
+    return (
+        <List horizontal={horizontal}>
+            {items.map(item => 
+                <List.Item key={item.id}>
+                    <DeleteableItem item={nested ? item.item : item} { ...rest }/>
+                </List.Item>
+            )}
+        </List>
+    );
+}
+
 export const EditableItemList = ({ items=[], placeholder = '', onAddItem, onDeleteItem, onClickItem }) => {
 
     return (
         <FlexColumnContainer>
             <AddableItem placeholder={placeholder} onAddItem={onAddItem}/>
-            <List>
-                {items.map(item => 
-                    <List.Item key={item.name}>
-                        <DeleteableItem name={item.name} detail={item.detail} onDeleteItem={onDeleteItem} onClickItem={onClickItem} />
-                    </List.Item>
-                )}
-            </List>
+            <DeleteableItemList items={items} onDeleteItem={onDeleteItem} onClickItem={onClickItem}/>
         </FlexColumnContainer>
     );
 }

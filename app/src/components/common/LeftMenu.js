@@ -44,6 +44,7 @@ class LeftMenu extends React.Component {
                 as={Link}
                 to='/courses/all'
                 name='all'
+                key='all'
                 active={activeItem === 'all'}
                 onClick={this.handleItemClick}
             >
@@ -56,7 +57,8 @@ class LeftMenu extends React.Component {
                         <Menu.Item 
                             as={Link}
                             to="/courses/own"
-                            name='own' 
+                            name='own'
+                            key='own' 
                             active={activeItem === 'own'} 
                             onClick={this.handleItemClick}>
                             Own
@@ -70,6 +72,7 @@ class LeftMenu extends React.Component {
                     as={Link}
                     to={`/courses?createdBy=${userId}`}
                     name='own'
+                    key='own'
                     active={activeItem === 'own'}
                     onClick={this.handleItemClick}
                 >
@@ -82,6 +85,7 @@ class LeftMenu extends React.Component {
                     as={Link}
                     to={`/courses/create`}
                     name='create-course'
+                    key='create-course'
                     active={activeItem === 'create-course'}
                     onClick={this.handleItemClick}
                 >
