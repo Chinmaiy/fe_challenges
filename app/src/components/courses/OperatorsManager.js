@@ -1,5 +1,6 @@
 import React from 'react';
 import uniqid from 'uniqid';
+import { Segment, Grid, GridRow, Button, GridColumn } from 'semantic-ui-react';
 
 const OPERATORS = {
     ADD: {
@@ -28,11 +29,36 @@ const OPERATORS = {
     }
 };
 
+const Operator = ({ name }) => {
+    return (
+        <GridColumn>
+            <Button color="teal" content={name}/>
+        </GridColumn>
+    );
+};
+
 const OperatorsManager = () => {
 
+    const operators = Object.keys(OPERATORS)
+        .map(key => OPERATORS[key].name)
+        .map(name => <Operator name={name}/>);
+
     return (
-        <div>Operators List</div>
-    )
+        <Grid celled columns="3" textAlign="center">
+            <GridRow>
+                {operators[0]}
+                {operators[1]}
+                {operators[2]}
+            </GridRow>
+            <GridRow>
+                {operators[3]}
+                {operators[4]}
+                <GridColumn>
+
+                </GridColumn>
+            </GridRow>
+        </Grid>
+    );
 }
 
 export default OperatorsManager;
