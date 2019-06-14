@@ -1,6 +1,8 @@
 import React from 'react';
+import { Grid, GridRow, Button, GridColumn } from 'semantic-ui-react';
+
 import uniqid from 'uniqid';
-import { Segment, Grid, GridRow, Button, GridColumn } from 'semantic-ui-react';
+import _ from 'lodash';
 
 const OPERATORS = {
     ADD: {
@@ -29,34 +31,43 @@ const OPERATORS = {
     }
 };
 
-const Operator = ({ name }) => {
+const Operator = ({ operator, onClick }) => {
     return (
         <GridColumn>
-            <Button color="teal" content={name}/>
+            <Button color="teal" content={operator.name} onClick={() => onClick(operator)}/>
         </GridColumn>
     );
 };
 
-const OperatorsManager = () => {
+const OperatorsManager = ({ onOperatorClick }) => {
+
+    const COLS_NR = 3; 
 
     const operators = Object.keys(OPERATORS)
-        .map(key => OPERATORS[key].name)
-        .map(name => <Operator name={name}/>);
+        .map(key => OPERATORS[key])
+        .map(operator => <Operator key={operator.id} operator={operator} onClick={onOperatorClick}/>);
+
+    const ROWS_NR = operators.length / COLS_NR;
 
     return (
         <Grid celled columns="3" textAlign="center">
-            <GridRow>
-                {operators[0]}
-                {operators[1]}
-                {operators[2]}
-            </GridRow>
-            <GridRow>
-                {operators[3]}
-                {operators[4]}
-                <GridColumn>
 
-                </GridColumn>
-            </GridRow>
+            {
+                _.range(0, ROWS_NR)
+                    .map(rowNr => 
+                        <GridRow key={rowNr}>
+                            {
+                                _.range(0, COLS_NR)
+                                    .map(colNr => {
+                                        const idx = rowNr * COLS_NR + colNr;
+                                        if(operators[idx])
+                                            return operators[idx]
+                                        else
+                                            return <GridColumn />
+                                    })
+                            }
+                        </GridRow>)
+            }
         </Grid>
     );
 }

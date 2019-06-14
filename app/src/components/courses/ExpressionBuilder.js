@@ -25,6 +25,8 @@ const ExpressionBuilder = ({ expressionNamePlaceholder, variablesHeader, variabl
 
     const onClickVariable = variable => setExpression([ ...expression, { id: uniqid(), item: { ...variable, type: 'var' } }]);
 
+    const onOperatorClick = operator => setExpression([ ...expression, { id: uniqid(), item: { ...operator, type: 'op' } }]);
+
     const onAddConstantValue = constant => setExpression([ ...expression, { id: uniqid(), item: { ...constant, type: 'const' }}]);
 
     return (
@@ -44,7 +46,7 @@ const ExpressionBuilder = ({ expressionNamePlaceholder, variablesHeader, variabl
                 <Segment padded="very">
                     <Header color="teal" as="h3">Operators:</Header>
                     <FlexColumnContainer verticalCenter>
-                        <OperatorsManager />
+                        <OperatorsManager onOperatorClick={onOperatorClick}/>
                         <Divider />
                         <AddableItem type="number" placeholder="Number" onAddItem={onAddConstantValue}/>
                     </FlexColumnContainer>
