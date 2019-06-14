@@ -38,7 +38,8 @@ class CreateCourse extends React.Component {
             {
                 id: uniqid(),
                 name: 'Component 2',
-                detail: 'Component 1 + 1'
+                detail: 'Component 1 + 1',
+                formula: ':Component 1: + 1'
             }
         ]
     }
@@ -117,11 +118,13 @@ class CreateCourse extends React.Component {
     onAddExpression = (expressionName, expression) => {
         const course = this.state.courseComponents.find(course => course.name === expressionName);
         if(!course) {
-            const formula = expression.map(elem => elem.item).reduce((acc, curr) => `${acc} ${curr.name}`, '');
+            const detail = expression.map(elem => elem.item).reduce((acc, curr) => `${acc} ${curr.name}`, '');
+            const formula = expression.map(elem => elem.item).reduce((acc, curr) => curr.type === 'var' ? `${acc} :${curr.name}:` : `${acc} ${curr.name}`, '');
             const newComponent = {
                 id: uniqid(),
                 name: expressionName,
-                detail: formula
+                detail,
+                formula
             };
             this.setState({
                 courseComponents: [ ...this.state.courseComponents, newComponent ]
@@ -146,7 +149,7 @@ class CreateCourse extends React.Component {
     }
 
     onSaveBtnClick = () => {
-        history.push("/courses/create"); //todo navigate to newly created course
+        console.log(this.state.courseComponents);
     }
 }
 
