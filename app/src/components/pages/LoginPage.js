@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
+import { Button, Divider } from 'semantic-ui-react';
 
 import Container from '../Container';
 import Logo from '../Logo';
@@ -19,6 +20,8 @@ class LoginPage extends React.Component {
             <Container>
                 <Logo/>
                 <LoginForm onSubmit={this.props.login}/>
+                <Divider />
+                <Button as={Link} to="/signup" color="teal">Sign up</Button>
             </Container>  
         );
     }

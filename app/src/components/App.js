@@ -6,6 +6,7 @@ import { DashboardPage } from './pages/DashboardPage';
 
 import history from '../history';
 import PrivateRoute from './PrivateRoute';
+import SignUpPage from './pages/SignUpPage';
 
 class App extends React.Component {
 
@@ -14,6 +15,7 @@ class App extends React.Component {
             <Router history={history}>
                 <Switch>
                     <Route path="/login" exact component={LoginPage}/>
+                    <Route path="/signup" exact component={SignUpPage}/>
                     <PrivateRoute component={DashboardPage}/>
                 </Switch>
             </Router>

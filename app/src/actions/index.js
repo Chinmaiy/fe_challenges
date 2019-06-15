@@ -26,6 +26,16 @@ export const login = ({ email, password }) => async dispatch => {
     });
 }
 
+export const signup = async ({ name, username, email, password }) => {
+
+    await wait(1000);
+
+    return {
+        success: false,
+        message: 'User already exists'
+    };
+}
+
 export const logout = () => async dispatch => {
 
     //mock api request
