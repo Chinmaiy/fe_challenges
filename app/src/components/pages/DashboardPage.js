@@ -8,7 +8,7 @@ import GradesTable from '../courses/GradesTable';
 import GradesCard from '../courses/GradesCard';
 import CreateCourse from '../courses/CreateCourse';
 
-export class DashboardPage extends React.Component {
+class DashboardPage extends React.Component {
 
     render() {
         return (
@@ -17,8 +17,13 @@ export class DashboardPage extends React.Component {
                 <div className="right-container">
                     <Route
                         exact
-                        path="/courses/:which(all|own)" 
-                        render={props => <CourseList which={props.match.params.which} key={props.location.key}/> }  
+                        path="/courses" 
+                        render={props => <CourseList {...props} key={props.location.key}/> }  
+                    />
+                    <Route 
+                        exact
+                        path="/:username/courses"
+                        render={props => <CourseList {...props} key={props.location.key}/> }
                     />
                     <Route 
                         exact 
@@ -38,3 +43,5 @@ export class DashboardPage extends React.Component {
         );
     }
 }
+
+export default DashboardPage;

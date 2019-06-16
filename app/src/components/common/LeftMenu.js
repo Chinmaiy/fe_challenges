@@ -38,7 +38,7 @@ class LeftMenu extends React.Component {
         menuItems.push(
             <Menu.Item
                 as={Link}
-                to='/courses/all'
+                to='/courses'
                 name='all'
                 key='all'
                 active={activeItem === 'all'}
@@ -47,34 +47,18 @@ class LeftMenu extends React.Component {
                 All
             </Menu.Item>);
 
-        if(roles && roles.includes("STUDENT")) {
-
-            menuItems.push(
-                        <Menu.Item 
-                            as={Link}
-                            to="/courses/own"
-                            name='own'
-                            key='own' 
-                            active={activeItem === 'own'} 
-                            onClick={this.handleItemClick}>
-                            Own
-                        </Menu.Item>);
-        }
+        menuItems.push(
+            <Menu.Item 
+                as={Link}
+                to={`${this.props.userInfo.username}/courses`}
+                name='own'
+                key='own' 
+                active={activeItem === 'own'} 
+                onClick={this.handleItemClick}>
+                Own
+            </Menu.Item>);
 
         if(roles && roles.includes("PROFESSOR")) {
-            const userId = this.props.userInfo.id;
-            menuItems.push(
-                <Menu.Item
-                    as={Link}
-                    to={`/courses?createdBy=${userId}`}
-                    name='own'
-                    key='own'
-                    active={activeItem === 'own'}
-                    onClick={this.handleItemClick}
-                >
-                    Own
-                </Menu.Item>
-            );
             
             menuItems.push(
                 <Menu.Item

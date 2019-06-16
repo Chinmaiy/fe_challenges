@@ -1,22 +1,52 @@
 import React from 'react';
-import { Container, Header, Button, Divider, Input, Label } from 'semantic-ui-react';
+import { Container, Header, Button, Divider, Input, Select } from 'semantic-ui-react';
 import _ from 'lodash';
 import uniqid from 'uniqid';
 
 import { EditableItemList, FlexColumnContainer } from '../generics';
 import ExpressionBuilder from './ExpressionBuilder';
 
+import { createCourse } from '../../actions';
+
 import history from '../../history';
 
-const CourseBasicInfoForm = ({ onChange }) => {
+const CourseBasicInfoForm = ({ onChange, ...props }) => {
+
+    //todo - should get these from the server and passed in as props
+    const yearOptions = [
+        { key: "year1", value: 1, text: "1" },
+        { key: "year2", value: 2, text: "2" },
+        { key: "year3", value: 3, text: "3" },
+    ]
 
     return (
         <FlexColumnContainer fluid>
 
             <Input 
-                placeholder="Course Name"
+                value={props.name}
+                placeholder="Name"
                 size="big"
-                name="courseName"
+                name="name"
+                onChange={onChange}
+            />
+
+            <Divider />
+
+            <Input 
+                value={props.description}
+                placeholder="Description"
+                size="big"
+                name="description"
+                onChange={onChange}
+            />
+
+            <Divider />
+
+            <Select 
+                value={props.year}
+                placeholder="Year"
+                name="year"
+                options={yearOptions}
                 onChange={onChange}
             />
 
@@ -27,10 +57,11 @@ const CourseBasicInfoForm = ({ onChange }) => {
 class CreateCourse extends React.Component {
 
     state = {
-        currentStep: 2,
-        courseName: '',
-        courseYear: null,
-        courseComponents: [
+        currentStep: 0,
+        name: '',
+        description: '',
+        year: null,
+        components: [
             {
                 id: uniqid(),
                 name: 'Component 1'
@@ -39,7 +70,8 @@ class CreateCourse extends React.Component {
                 id: uniqid(),
                 name: 'Component 2',
                 detail: 'Component 1 + 1',
-                formula: ':Component 1: + 1'
+                expressionType: 'NUMERIC',
+                expression: ':Component 1: + 1'
             }
         ]
     }
@@ -50,12 +82,17 @@ class CreateCourse extends React.Component {
 
         const formStepNames = ["Basic Course Information", "Basic Components", "Grade Components"];
 
+        const { name, description, year } = this.state;
+
         const steps = {
             0: <CourseBasicInfoForm
+                    name={name}
+                    description={description}
+                    year={year}
                     onChange={this.onChange}
                 />,
             1:  <EditableItemList 
-                    items={this.state.courseComponents} 
+                    items={this.state.components} 
                     placeholder="Component Name"
                     onAddItem={this.onAddItem}
                     onDeleteItem={this.onDeleteItem}
@@ -64,7 +101,7 @@ class CreateCourse extends React.Component {
             2: <ExpressionBuilder 
                     expressionNamePlaceholder="Component Name"
                     variablesHeader="Created Components:"
-                    variables={this.state.courseComponents}
+                    variables={this.state.components}
                     onDeleteVariable={this.onDeleteItem}
                     onAddExpression={this.onAddExpression}
                 />
@@ -93,41 +130,41 @@ class CreateCourse extends React.Component {
         );
     }
 
-    onChange = event => {
-        const { name, value } = event.target;
+    onChange = (event, props) => {
+        const { name, value } = props;
         this.setState({
             [name]: value
         });
     }
 
     onAddItem = (item) => {
-        const course = this.state.courseComponents.find(course => course.name === item.name);
-        if(!course) {
+        const component = this.state.components.find(component => component.name === item.name);
+        if(!component) {
             this.setState({
-                courseComponents: [ ...this.state.courseComponents, { ...item, id: uniqid() } ]
+                components: [ ...this.state.components, { ...item, id: uniqid() } ]
             });
         }
     }
 
     onDeleteItem = ({ id }) => {
         this.setState({
-            courseComponents: this.state.courseComponents.filter(course => course.id !== id)
+            components: this.state.components.filter(component => component.id !== id)
         });
     }
 
     onAddExpression = (expressionName, expression) => {
-        const course = this.state.courseComponents.find(course => course.name === expressionName);
-        if(!course) {
+        const component = this.state.components.find(component => component.name === expressionName);
+        if(!component) {
             const detail = expression.map(elem => elem.item).reduce((acc, curr) => `${acc} ${curr.name}`, '');
             const formula = expression.map(elem => elem.item).reduce((acc, curr) => curr.type === 'var' ? `${acc} :${curr.name}:` : `${acc} ${curr.name}`, '');
             const newComponent = {
                 id: uniqid(),
                 name: expressionName,
                 detail,
-                formula
+                expression: formula
             };
             this.setState({
-                courseComponents: [ ...this.state.courseComponents, newComponent ]
+                components: [ ...this.state.components, newComponent ]
             });
         }
     }
@@ -148,8 +185,9 @@ class CreateCourse extends React.Component {
         );
     }
 
-    onSaveBtnClick = () => {
-        console.log(this.state.courseComponents);
+    onSaveBtnClick = async () => {
+        const response = await createCourse(this.state)
+        console.log(response);
     }
 }
 

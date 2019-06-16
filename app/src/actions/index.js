@@ -100,6 +100,19 @@ export const getCourses = async (which) => {
     return payload;
 }
 
+export const createCourse = async (payload, token) => {
+
+    const response = await fiiGradeApi.post('/courses/create', payload, {
+        headers: {
+            'Authentication': token
+        }
+    });
+
+    return {
+        ...response.data
+    }
+}
+
 export const enroll = async courseId => {
 
     //need also the user id or get it from the session on the server
