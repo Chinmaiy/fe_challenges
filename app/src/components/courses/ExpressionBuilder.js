@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
-import { Segment, Icon, Divider, Header } from 'semantic-ui-react';
+import { Segment, Divider, Header, Select } from 'semantic-ui-react';
 import uniqid from 'uniqid';
 import { AddableItem, DeleteableItemList, FlexColumnContainer } from '../generics';
 import OperatorsManager from './OperatorsManager';
 
 //variables = [ { id: ..., name: ..., detail: ... } ] //details will be displayed as tooltip if present
-//expression = [ { id: ..., item: {...}}]
+//expression = [ { id: ..., item: {...} }]
+
+const typeOptions = [
+    { key: 'typeNr', value: 'NUMERIC', text: 'Numeric' },
+    { key: 'typeBool', value: 'BOOLEAN', text: 'Condition'}
+]
 
 const ExpressionBuilder = ({ expressionNamePlaceholder, variablesHeader, variables, onAddExpression, onDeleteVariable }) => {
 
     const [ expression, setExpression ] = useState([]);
+    const [ type, setType ] = useState("NUMERIC");
 
     const internalOnAddExpression = item => {
-        onAddExpression(item.name, expression);
+        onAddExpression(item.name, expression, type);
         setExpression([]);
     }
 
@@ -33,6 +39,12 @@ const ExpressionBuilder = ({ expressionNamePlaceholder, variablesHeader, variabl
         <Segment.Group>
             <Segment padded>
                 <AddableItem placeholder={expressionNamePlaceholder} onAddItem={internalOnAddExpression}/>
+                <Divider />
+                <Select
+                    options={typeOptions}
+                    defaultValue='NUMERIC'
+                    onChange={(event, props) => setType(props.value)}
+                />
             </Segment>
             <Segment padded>
                 <Header color="teal" as="h3">Formula:</Header>

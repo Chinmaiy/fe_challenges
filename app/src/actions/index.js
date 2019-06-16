@@ -104,9 +104,11 @@ export const createCourse = async (payload, token) => {
 
     const response = await fiiGradeApi.post('/courses/create', payload, {
         headers: {
-            'Authentication': token
+            Authorization: token
         }
     });
+
+    console.log(response);
 
     return {
         ...response.data

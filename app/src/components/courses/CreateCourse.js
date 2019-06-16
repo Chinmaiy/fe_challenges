@@ -1,58 +1,14 @@
 import React from 'react';
-import { Container, Header, Button, Divider, Input, Select } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { Container, Header, Button, Divider } from 'semantic-ui-react';
 import _ from 'lodash';
 import uniqid from 'uniqid';
 
-import { EditableItemList, FlexColumnContainer } from '../generics';
 import ExpressionBuilder from './ExpressionBuilder';
+import { CourseBasicInfoForm } from './CourseBasicInfoForm';
 
 import { createCourse } from '../../actions';
-
 import history from '../../history';
-
-const CourseBasicInfoForm = ({ onChange, ...props }) => {
-
-    //todo - should get these from the server and passed in as props
-    const yearOptions = [
-        { key: "year1", value: 1, text: "1" },
-        { key: "year2", value: 2, text: "2" },
-        { key: "year3", value: 3, text: "3" },
-    ]
-
-    return (
-        <FlexColumnContainer fluid>
-
-            <Input 
-                value={props.name}
-                placeholder="Name"
-                size="big"
-                name="name"
-                onChange={onChange}
-            />
-
-            <Divider />
-
-            <Input 
-                value={props.description}
-                placeholder="Description"
-                size="big"
-                name="description"
-                onChange={onChange}
-            />
-
-            <Divider />
-
-            <Select 
-                value={props.year}
-                placeholder="Year"
-                name="year"
-                options={yearOptions}
-                onChange={onChange}
-            />
-
-        </FlexColumnContainer>
-    );
-}
 
 class CreateCourse extends React.Component {
 
@@ -61,26 +17,14 @@ class CreateCourse extends React.Component {
         name: '',
         description: '',
         year: null,
-        components: [
-            {
-                id: uniqid(),
-                name: 'Component 1'
-            },
-            {
-                id: uniqid(),
-                name: 'Component 2',
-                detail: 'Component 1 + 1',
-                expressionType: 'NUMERIC',
-                expression: ':Component 1: + 1'
-            }
-        ]
+        components: []
     }
 
     maxStepNr;
 
     render() {
 
-        const formStepNames = ["Basic Course Information", "Basic Components", "Grade Components"];
+        const formStepNames = ["Basic Course Information", "Grade Components"];
 
         const { name, description, year } = this.state;
 
@@ -91,14 +35,7 @@ class CreateCourse extends React.Component {
                     year={year}
                     onChange={this.onChange}
                 />,
-            1:  <EditableItemList 
-                    items={this.state.components} 
-                    placeholder="Component Name"
-                    onAddItem={this.onAddItem}
-                    onDeleteItem={this.onDeleteItem}
-                    onClickItem={this.onClickItem}
-                />,
-            2: <ExpressionBuilder 
+            1: <ExpressionBuilder 
                     expressionNamePlaceholder="Component Name"
                     variablesHeader="Created Components:"
                     variables={this.state.components}
@@ -152,7 +89,7 @@ class CreateCourse extends React.Component {
         });
     }
 
-    onAddExpression = (expressionName, expression) => {
+    onAddExpression = (expressionName, expression, type) => {
         const component = this.state.components.find(component => component.name === expressionName);
         if(!component) {
             const detail = expression.map(elem => elem.item).reduce((acc, curr) => `${acc} ${curr.name}`, '');
@@ -161,7 +98,8 @@ class CreateCourse extends React.Component {
                 id: uniqid(),
                 name: expressionName,
                 detail,
-                expression: formula
+                expression: formula,
+                type
             };
             this.setState({
                 components: [ ...this.state.components, newComponent ]
@@ -186,9 +124,26 @@ class CreateCourse extends React.Component {
     }
 
     onSaveBtnClick = async () => {
-        const response = await createCourse(this.state)
-        console.log(response);
+        const payload = this.sanitizeForSerialization();
+        const response = await createCourse(payload, this.props.token);
+        if(response.success) {
+            history.push('/'); //todo redirect link to course view
+        } else {
+            //todo add errors panel
+        }
+    }
+
+    sanitizeForSerialization = () => {
+        const payload = _.omit(this.state, ["currentStep"]);
+        payload.components = this.state.components.map(component => _.omit(component, ["id", "detail"]));
+        return payload;
     }
 }
 
-export default CreateCourse;
+const mapStateToProps = state => {
+    return {
+        token: state.userInfo.token
+    }
+}
+
+export default connect(mapStateToProps, null)(CreateCourse);
