@@ -2,13 +2,6 @@ import React from 'react';
 
 import { Form, Input, Message } from 'semantic-ui-react';
 
-const INITIAL_STATE = {
-    name: '',
-    username: '',
-    email: '',
-    password: ''
-}
-
 class SignUpForm extends React.Component {
 
     state = {

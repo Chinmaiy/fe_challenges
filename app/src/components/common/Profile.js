@@ -8,18 +8,26 @@ class Profile extends React.Component {
 
     render() {
 
-        const { imageSrc, name, description } = this.props;
+        const imageSrc="https://react.semantic-ui.com/images/avatar/large/matthew.png"
+
+        const { username, createdAt } = this.props.userInfo;
+
+        const registerDate = new Date(createdAt).toLocaleDateString({
+            day: "numeric",
+            weekday: "short",
+            year: "numeric",
+            month: "narrow"
+        });
  
         return (
             <Card>
                 <Image src={imageSrc} wrapped ui={false} />
                 <Card.Content>
-                    <Card.Header>{name}</Card.Header>
+                    <Card.Header>{username}</Card.Header>
                     <Card.Meta>
-                        <span className='date'>Joined in 2015</span>
+                        <span className='date'>Joined: {registerDate}</span>
                     </Card.Meta>
                     <Card.Description>
-                        {description}
                     </Card.Description>
                 </Card.Content>
                 <Card.Content extra>

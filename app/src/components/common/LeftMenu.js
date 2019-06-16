@@ -15,11 +15,7 @@ class LeftMenu extends React.Component {
             <Menu vertical fixed="left" color="teal">
 
                 <Menu.Item>
-                    <Profile
-                        imageSrc="https://react.semantic-ui.com/images/avatar/large/matthew.png"
-                        name={this.props.userInfo.name}
-                        description="Some more info about the user here."
-                    />
+                    <Profile userInfo={this.props.userInfo}/>
                 </Menu.Item>
 
                 <Menu.Item>
@@ -51,7 +47,7 @@ class LeftMenu extends React.Component {
                 All
             </Menu.Item>);
 
-        if(roles && roles.includes("student")) {
+        if(roles && roles.includes("STUDENT")) {
 
             menuItems.push(
                         <Menu.Item 
@@ -65,7 +61,7 @@ class LeftMenu extends React.Component {
                         </Menu.Item>);
         }
 
-        if(roles && roles.includes("professor")) {
+        if(roles && roles.includes("PROFESSOR")) {
             const userId = this.props.userInfo.id;
             menuItems.push(
                 <Menu.Item

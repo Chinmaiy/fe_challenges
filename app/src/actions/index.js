@@ -12,28 +12,23 @@ import history from '../history';
 
 const wait = ms => new Promise((resolve, reject) => setTimeout(resolve, ms));
 
-export const login = ({ email, password }) => async dispatch => {
+export const login = (payload) => async dispatch => {
 
-    //mock api request
-    await wait(2000);
+    const response = await fiiGradeApi.post('/auth/signin', payload);
     dispatch({
-        type: LOGIN_SUCCESS,
-        payload: {
-            id: 12345,
-            name: 'Chinmaiy',
-            roles: ['student']
-        }
+        type: response.status === 200 ? LOGIN_SUCCESS : LOGIN_FAIL,
+        payload: response.data
     });
 }
 
-export const signup = async ({ name, username, email, password }) => {
+export const signup = async (payload) => {
 
-    await wait(1000);
+    const response = await fiiGradeApi.post('/auth/signup', payload);
 
     return {
-        success: false,
-        message: 'User already exists'
-    };
+        success: response.data.success,
+        message: response.data.message
+    }
 }
 
 export const logout = () => async dispatch => {
