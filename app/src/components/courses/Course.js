@@ -84,21 +84,20 @@ class Course extends React.Component {
     }
 
     onEnrollBtnClick = async (event, btnProps) => {
-        const { error, enrolled } = await enroll(this.props.courseId);
+        const { success } = await enroll(this.props.userInfo, this.props.courseId);
 
         toast({
-            title: `${error ? 'Not ' : ''}Enrolled`,
-            type: error ? 'error' : 'info',
-            color: error ? 'red' : 'teal',
+            title: `${success ? '' : 'Not '}Enrolled in ${this.props.name}`,
+            type: success ? 'info' : 'error',
+            color: success ? 'teal' : 'red',
             size: 'small',
             time: 5000,
             animation: 'slide left'
         });
-        if(enrolled) {
-            this.setState({
-                enrolled
-            });
-        }
+
+        this.setState({
+            isCurrentUserEnrolled: success
+        });
     }
 }
 

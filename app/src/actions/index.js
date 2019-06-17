@@ -130,14 +130,18 @@ export const isEnrolled = async (userInfo, courseId) => {
     return response.data.payload;
 }
 
-export const enroll = async courseId => {
+export const enroll = async (userInfo, courseId) => {
 
-    //need also the user id or get it from the session on the server
-    await wait(500);
+    const response = await fiiGradeApi.post(`/courses/${courseId}/enroll`, null, {
+        params: {
+            userId: userInfo.id
+        },
+        headers: {
+            Authorization: userInfo.token
+        }
+    });
 
-    return {
-        enrolled: true
-    }
+    return response.data;
 };
 
 export const getGradesCardData = async courseId => {
