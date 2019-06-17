@@ -50,7 +50,7 @@ class LeftMenu extends React.Component {
         menuItems.push(
             <Menu.Item 
                 as={Link}
-                to={`${this.props.userInfo.username}/courses`}
+                to={`/${this.props.userInfo.username}/courses`}
                 name='own'
                 key='own' 
                 active={activeItem === 'own'} 

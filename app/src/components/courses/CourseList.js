@@ -1,8 +1,10 @@
 import React from 'react';
-import { Card, Grid } from 'semantic-ui-react';
+import { Grid, Message } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+
 import Course from './Course';
 import Spinner from '../common/Spinner';
-import { getCourses } from '../../actions';
+import { getCoursesWithOwnersInfo } from '../../actions';
 
 class CourseList extends React.Component {
 
@@ -11,8 +13,8 @@ class CourseList extends React.Component {
     };
 
     async componentDidMount() {
-        console.log(this.props);
-        const courses = await getCourses(this.props.which);
+        const filter = this.props.match.params.username !== undefined;
+        const courses = await getCoursesWithOwnersInfo(this.props.userInfo, filter);
         this.setState({
             courses
         });
@@ -24,8 +26,18 @@ class CourseList extends React.Component {
             return <Spinner/>
         }
 
+        if(this.state.courses.length === 0) {
+            return (
+                <Message 
+                    info 
+                    size="big"
+                    header="No courses to display."
+                />
+            );
+        }
+
         return (
-            <Grid stackable container columns={16} >
+            <Grid container columns={16} >
                 {this.state.courses.map(course => 
                     <Grid.Column mobile={16} tablet={8} computer={4} key={course.id}>
                         <Course
@@ -33,6 +45,10 @@ class CourseList extends React.Component {
                                 key={course.id}
                                 name={course.name}
                                 description={course.description}
+                                ownerId={course.owner.id}
+                                ownerName={course.owner.name}
+                                ownerUsername={course.owner.username}
+                                userInfo={this.props.userInfo}
                         />
                     </Grid.Column>
                 )}
@@ -41,5 +57,11 @@ class CourseList extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        userInfo: state.userInfo
+    };
+}
 
-export default CourseList;
+
+export default connect(mapStateToProps, null)(CourseList);
