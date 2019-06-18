@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import LeftMenu from '../common/LeftMenu';
 import CourseList from '../courses/CourseList';
@@ -28,15 +29,21 @@ class DashboardPage extends React.Component {
                     <Route 
                         exact 
                         path="/courses/:id([0-9]+)/grades"
-                        render={props => <GradesCard courseId={props.match.params.id} key={props.location.key}/> }
+                        render={props => {
+                           let Component = () => ''; //todo Unauthorized component
+                           if(this.props.userInfo.roles.includes('STUDENT')) {
+                                Component = GradesCard;
+                           } else if(this.props.userInfo.roles.includes('PROFESSOR')) {
+                               Component = GradesTable;
+                           }
+                           return <Component {...props} courseId={props.match.params.id} key={props.location.key}/>
+                        }}
                     />
                     <Route
                         exact
                         path="/courses/create"
                         render={props => <CreateCourse key={props.location.key}/> }
-                    >
-
-                    </Route>
+                    />
                     <ToastContainer />
                 </div>
             </React.Fragment>
@@ -44,4 +51,10 @@ class DashboardPage extends React.Component {
     }
 }
 
-export default DashboardPage;
+const mapStateToProps = state => {
+    return {
+        userInfo: state.userInfo
+    }
+};
+
+export default connect(mapStateToProps, null)(DashboardPage);
