@@ -11,9 +11,14 @@ class GradesTable extends React.Component {
     state = {
         data: [
             {
-                C1: 1,
-                C2: 2,
-                C3: 4
+                "Component 1": 1,
+                "Component 2": 2,
+                "Total": 4
+            },
+            {
+                "Component 1": 11,
+                "Component 2": 12,
+                "Total": 14
             }
 
         ],
@@ -38,6 +43,7 @@ class GradesTable extends React.Component {
     }
 
     async componentDidMount() {
+        //get column data
         // const tableData = await getGradesTableData(this.props.courseId);
         // this.setState({
         //     columns: tableData.columns 
@@ -94,20 +100,31 @@ class GradesTable extends React.Component {
                 columns={[
                     {
                         Header: 'Component 1',
-                        id: 'C1',
-                        accessor: d => d[1],
+                        id: 'Component 1',
+                        accessor: d => d['Component 1'],
                         Cell: this.renderEditable
                     },
                     {
                         Header: 'Component 2',
-                        id: 'C2',
-                        accessor: d => d[2],
+                        id: 'Component 2',
+                        accessor: d => d['Component 2'],
                         Cell: this.renderEditable
                     },
                     {
                         Header: 'Total',
-                        id: 'C3',
-                        accessor: d => d['C3'] //to do evaluate formula if the case
+                        id: 'Total',
+                        accessor: d => {
+                            const expression = this.state.columns[2].expression;
+                            const regexp = '(:)([^:]+)(:)';
+                            const formattedIds = [...expression.matchAll(regexp)];
+                            let exp = expression;
+                            formattedIds.forEach(formattedId => {
+                                exp = exp.replace(formattedId[0], d[formattedId[2]]);
+                            });
+                            console.log(exp);
+                            console.log(eval(exp));
+                            return eval(exp);
+                        }
                     }
                 ]}
                 defaultPageSize={10}
