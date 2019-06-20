@@ -234,6 +234,7 @@ export const getTableMetadata = async courseId => {
             id: 'C3',
             name: 'Total',
             type: 'NUMERIC',
+            displayExpression: 'Component 1 + Component 2 + 1',
             expression: ':C1: + :C2: + 1'
         }
     ];
