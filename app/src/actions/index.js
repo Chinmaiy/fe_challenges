@@ -175,7 +175,7 @@ export const getGradesCardData = async courseId => {
 
 export const getGradesTableData = async courseId => {
 
-    await(500);
+    await(2000);
 
     const payload = {
         columns: [
@@ -197,3 +197,51 @@ export const getGradesTableData = async courseId => {
 
     return payload;
 }
+
+export const getTableData = async courseId => {
+
+    await (1000);
+
+    const payload = [
+        {
+            "C1": 1,
+            "C2": 2,
+            "C3": 4
+        },
+        {
+            "C1": 11,
+            "C2": 12,
+            "C3": 14
+        }
+
+    ];
+
+    return payload;
+}
+
+export const getTableMetadata = async courseId => {
+
+    await(2000);
+
+    const payload = [
+        {
+            id: 'C1',
+            name: 'Component 1',
+            type: 'NUMERIC'
+        },
+        {
+            id: 'C2',
+            name: 'Component 2',
+            type: 'NUMERIC'
+        },
+        {
+            id: 'C3',
+            name: 'Total',
+            type: 'NUMERIC',
+            displayExpression: 'Component 1 + Component 2 + 1',
+            expression: ':C1: + :C2: + 1'
+        }
+    ];
+
+    return payload;
+};
