@@ -67,7 +67,7 @@ class Course extends React.Component {
         return (
             <Card.Content extra textAlign="center">
 
-                <Button as={Link} to={`/courses/${courseId}`} color="teal">View</Button> 
+                <Button as={Link} to={`/courses/${courseId}/grades`} color="teal">View</Button> 
                 {this.renderEnrollButton()}
                 
             </Card.Content>

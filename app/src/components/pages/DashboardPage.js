@@ -36,7 +36,8 @@ class DashboardPage extends React.Component {
                            } else if(this.props.userInfo.roles.includes('PROFESSOR')) {
                                Component = GradesTable;
                            }
-                           return <Component {...props} courseId={props.match.params.id} key={props.location.key}/>
+                           return <Component {...props} 
+                                    courseId={props.match.params.id} key={props.location.key} userInfo={this.props.userInfo}/>
                         }}
                     />
                     <Route

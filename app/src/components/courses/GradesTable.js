@@ -13,12 +13,16 @@ class GradesTable extends React.Component {
         loadingColumns: true,
         data: [],
         columns: [],
-        totalPages: 1
+        totalPages: 0
     }
 
     async componentDidMount() {
 
-        const columns = await getTableMetadata();
+        console.log(this.props);
+
+        const courseMetadata = await getTableMetadata(this.props.courseId, this.props.userInfo);
+
+        const columns = courseMetadata.components;
 
         this.setState({
             columns,
@@ -67,7 +71,7 @@ class GradesTable extends React.Component {
         let header = <Header color="teal">{serverSideColumnMetadata.name}</Header>
 
         if(serverSideColumnMetadata.displayExpression) {
-            header = <Popup position="bottom center" content={serverSideColumnMetadata.displayExpression} trigger={header} />
+            header = <Popup position="bottom center" content={serverSideColumnMetadata.expressionDisplay} trigger={header} />
         }
 
         return header;

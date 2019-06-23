@@ -173,29 +173,35 @@ export const getGradesCardData = async courseId => {
     return payload;
 }
 
-export const getGradesTableData = async courseId => {
+export const getGradesTableData = async (courseId, userInfo) => {
 
-    await(2000);
+    const response = await fiiGradeApi.get(`/courses/${courseId}`, {
+        headers: {
+            Authorization: userInfo.token
+        }
+    });
 
-    const payload = {
-        columns: [
-            {
-                id: 1,
-                name: "Course Component 1"
-            },
-            {
-                id: 2,
-                name: "Course Component 2"
-            },
-            {
-                id: 3,
-                name: "Formula 1",
-                formula: "(C_1 + C_2) / 2"
-            }
-        ]
-    }
+    return response.data;
 
-    return payload;
+    // const payload = {
+    //     columns: [
+    //         {
+    //             id: 1,
+    //             name: "Course Component 1"
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Course Component 2"
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Formula 1",
+    //             formula: "(C_1 + C_2) / 2"
+    //         }
+    //     ]
+    // }
+
+    // return payload;
 }
 
 export const getTableData = async courseId => {
