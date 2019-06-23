@@ -204,50 +204,66 @@ export const getGradesTableData = async (courseId, userInfo) => {
     // return payload;
 }
 
-export const getTableData = async courseId => {
+export const getTableData = async (courseId, userInfo, page, size) => {
 
-    await (1000);
-
-    const payload = [
-        {
-            "C1": 1,
-            "C2": 2,
-            "C3": 4
+    const response = await fiiGradeApi.get(`/courses/${courseId}/data`, {
+        paams: {
+            page,
+            size
         },
-        {
-            "C1": 11,
-            "C2": 12,
-            "C3": 14
+        headers: {
+            Authorization: userInfo.token
         }
+    });
 
-    ];
+    return response.data;
 
-    return payload;
+    // const payload = [
+    //     {
+    //         "C1": 1,
+    //         "C2": 2,
+    //         "C3": 4
+    //     },
+    //     {
+    //         "C1": 11,
+    //         "C2": 12,
+    //         "C3": 14
+    //     }
+
+    // ];
+
+    // return payload;
 }
 
-export const getTableMetadata = async courseId => {
+export const getTableMetadata = async (courseId, userInfo) => {
 
-    await(2000);
-
-    const payload = [
-        {
-            id: 'C1',
-            name: 'Component 1',
-            type: 'NUMERIC'
-        },
-        {
-            id: 'C2',
-            name: 'Component 2',
-            type: 'NUMERIC'
-        },
-        {
-            id: 'C3',
-            name: 'Total',
-            type: 'NUMERIC',
-            displayExpression: 'Component 1 + Component 2 + 1',
-            expression: ':C1: + :C2: + 1'
+    const response = await fiiGradeApi.get(`/courses/${courseId}`, {
+        headers: {
+            Authorization: userInfo.token
         }
-    ];
+    });
 
-    return payload;
+    return response.data;
+
+    // const payload = [
+    //     {
+    //         id: 'C1',
+    //         name: 'Component 1',
+    //         type: 'NUMERIC'
+    //     },
+    //     {
+    //         id: 'C2',
+    //         name: 'Component 2',
+    //         type: 'NUMERIC'
+    //     },
+    //     {
+    //         id: 'C3',
+    //         name: 'Total',
+    //         type: 'NUMERIC',
+    //         displayExpression: 'Component 1 + Component 2 + 1',
+    //         expression: ':C1: + :C2: + 1'
+    //     }
+    // ];
+
+    // return payload;
 };

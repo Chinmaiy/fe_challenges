@@ -18,8 +18,6 @@ class GradesTable extends React.Component {
 
     async componentDidMount() {
 
-        console.log(this.props);
-
         const courseMetadata = await getTableMetadata(this.props.courseId, this.props.userInfo);
 
         const columns = courseMetadata.components;
@@ -32,19 +30,23 @@ class GradesTable extends React.Component {
 
     onFetchData = async (state, instance) => {
         //get all the information you need on pagination (page, pageSize), sorting, filtering  from state and call server to get data
-        console.log(state);
-        console.log(instance);
+
+        const { page, pageSize } = state;
 
         this.setState({
             loadingData: true
         });
 
-        const data = await getTableData(); //pass needed information here
+        const responsePage = await getTableData(this.props.courseId, this.props.userInfo, page, pageSize); //pass needed information here
 
         this.setState({
-            data,
+            data: this.extractRowData(responsePage),
             loadingData: false
         });
+    }
+
+    extractRowData = (responsePage) => {
+        return responsePage.content.map(obj => obj.componentValues);
     }
 
     renderEditable = cellInfo => {
@@ -70,7 +72,7 @@ class GradesTable extends React.Component {
 
         let header = <Header color="teal">{serverSideColumnMetadata.name}</Header>
 
-        if(serverSideColumnMetadata.displayExpression) {
+        if(serverSideColumnMetadata.expression) {
             header = <Popup position="bottom center" content={serverSideColumnMetadata.expressionDisplay} trigger={header} />
         }
 
@@ -90,7 +92,6 @@ class GradesTable extends React.Component {
                 const expression = serverSideColumnMetadata.expression;
                 const regexp = '(:)([^:]+)(:)';
                 const formattedIds = [...expression.matchAll(regexp)];
-                console.log(formattedIds);
                 let exp = expression;
                 formattedIds.forEach(formattedId => {
                     exp = exp.replace(formattedId[0], row[formattedId[2]]);
