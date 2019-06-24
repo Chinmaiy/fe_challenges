@@ -135,7 +135,16 @@ class CreateCourse extends React.Component {
 
     sanitizeForSerialization = () => {
         const payload = _.omit(this.state, ["currentStep"]);
-        payload.components = this.state.components.map(component => _.omit(component, ["id", "detail"]));
+        let serverKeyMapping = { detail: 'expressionDisplay' };
+
+        let componentServerMapper = component => _(component)
+            .omit("id")
+            .mapKeys((v, k) => serverKeyMapping[k] || k)
+            .value();
+
+        payload.components = this.state.components.map(componentServerMapper)
+            .map((component, index) => ({ ...component, orderDisplay: index }));
+        
         return payload;
     }
 }
