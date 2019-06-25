@@ -3,6 +3,7 @@ import { Container, Input, Header, Popup, Button, Divider } from 'semantic-ui-re
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { toast } from 'react-semantic-toasts';
+import _ from 'lodash';
 
 import { getTableMetadata, getTableData, saveTableData } from '../../actions';
 import Spinner from '../common/Spinner';
@@ -18,11 +19,14 @@ class GradesTable extends React.Component {
             loadingColumns: true,
             data: [],
             columns: [],
-            totalPages: 0,
+            totalPages: null,
             isModified: false
         }
 
         this.modifiedDataRowsIndexes = new Set();
+        
+        this.filtering = false;
+        this.onFetchDataDebounced = _.debounce(this.onFetchData, 500);
     }
 
     async componentDidMount() {
@@ -38,23 +42,37 @@ class GradesTable extends React.Component {
         });
     }
 
-    onFetchData = async (state, instance) => {
-        //get all the information you need on pagination (page, pageSize), sorting, filtering  from state and call server to get data
+    fetchStrategy = (tableState, tableInstance) => {
+        if(this.filtering) {
+            return this.onFetchDataDebounced(tableState, tableInstance);
+        } else {
+            return this.onFetchData(tableState, tableInstance);
+        }
+    }
 
-        const { page, pageSize } = state;
+    onFetchData = async (tableState, tableInstance) => {
+        //get all the information you need on pagination (page, pageSize), sorting, filtering  from state and call server to get data
+        this.filtering = false;
+
+        console.log(tableState);
+
+        const { page, pageSize } = tableState;
 
         this.setState({
-            data: [],
             loadingData: true
         });
 
-        const responsePage = await getTableData(this.props.courseId, this.props.userInfo, page, pageSize, state.sorted[0]);
+        const responsePage = await getTableData(this.props.courseId, this.props.userInfo, page, pageSize, tableState.sorted[0]);
 
         this.setState({
             data: responsePage.content,
             loadingData: false,
             totalPages: responsePage.totalPages
         });
+    }
+
+    onFilterChange = (column, value) => {
+        this.filtering = true;
     }
 
     onClickSave = async () => {
@@ -83,8 +101,6 @@ class GradesTable extends React.Component {
     }
 
     renderEditable = cellInfo => {
-        console.log(cellInfo);
-        console.log(this.state.data);
         return (
             <Input 
                 fluid
@@ -145,6 +161,7 @@ class GradesTable extends React.Component {
         if(!serverSideColumnMetadata.expression) {
             if(serverSideColumnMetadata.type === 'STUDENT') {
                 uiColumnMetadata.sortable = true;
+                uiColumnMetadata.filterable = true;
             } else {
                 uiColumnMetadata.Cell = this.renderEditable;
             }
@@ -170,7 +187,8 @@ class GradesTable extends React.Component {
                     loading={this.state.loadingData}
                     data={this.state.data}
                     pages={this.state.totalPages}
-                    onFetchData={this.onFetchData}
+                    onFetchData={this.fetchStrategy}
+                    onFilteredChange={this.onFilterChange}
                     manual
                     columns={this.state.columns.map(this.getUIColumnMetadata)}
                     pageSizeOptions={[10, 25, 50]}
