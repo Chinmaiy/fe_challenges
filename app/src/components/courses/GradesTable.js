@@ -8,12 +8,18 @@ import Spinner from '../common/Spinner';
 
 class GradesTable extends React.Component {
 
-    state = {
-        loadingData: true,
-        loadingColumns: true,
-        data: [],
-        columns: [],
-        totalPages: 0
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loadingData: true,
+            loadingColumns: true,
+            data: [],
+            columns: [],
+            totalPages: 0
+        }
+
+        this.modifiedDataRowsIndexes = new Set();
     }
 
     async componentDidMount() {
@@ -34,19 +40,17 @@ class GradesTable extends React.Component {
         const { page, pageSize } = state;
 
         this.setState({
+            data: [],
             loadingData: true
         });
 
-        const responsePage = await getTableData(this.props.courseId, this.props.userInfo, page, pageSize, state.sorted[0]); //pass needed information here
+        const responsePage = await getTableData(this.props.courseId, this.props.userInfo, page, pageSize, state.sorted[0]);
 
         this.setState({
-            data: this.extractRowData(responsePage),
-            loadingData: false
+            data: responsePage.content,
+            loadingData: false,
+            totalPages: responsePage.totalPages
         });
-    }
-
-    extractRowData = (responsePage) => {
-        return responsePage.content.map(obj => obj.values);
     }
 
     renderEditable = cellInfo => {
@@ -58,7 +62,24 @@ class GradesTable extends React.Component {
                 onChange={(syntheticEvent, { value }) => {
                     if(value >= 0) {
                         const data = [...this.state.data];
-                        data[cellInfo.index][cellInfo.column.id] = value;
+                        data[cellInfo.index].values[cellInfo.column.id] = parseFloat(value);
+                        //compute other row values
+                        this.state.columns.forEach(column => {
+                            if(column.expression) {
+                                const row = cellInfo.original;
+                                const expression = column.expression;
+                                const regexp = '(:)([^:]+)(:)';
+                                const formattedIds = [...expression.matchAll(regexp)];
+                                let exp = expression;
+                                formattedIds.forEach(formattedId => {
+                                    let replacement = row.values[formattedId[2]] ? row.values[formattedId[2]] : 0;
+                                    exp = exp.replace(formattedId[0], replacement);
+                                });
+                                data[cellInfo.index].values[column.id] = eval(exp);
+                            }
+                        });
+                        this.modifiedDataRowsIndexes.add(cellInfo.index);
+                        console.log(this.modifiedDataRowsIndexes);
                         this.setState({ data });
                     }
                 }}
@@ -84,28 +105,15 @@ class GradesTable extends React.Component {
         let uiColumnMetadata = {
             Header: this.getColumnHeaderRenderer(serverSideColumnMetadata),
             id: serverSideColumnMetadata.id,
-            sortable: false
+            sortable: false,
+            accessor: row => row.values[serverSideColumnMetadata.id]
         };
 
-        //should move this part in a separate module
-        if(serverSideColumnMetadata.expression) {
-            uiColumnMetadata.accessor = row => {
-                const expression = serverSideColumnMetadata.expression;
-                const regexp = '(:)([^:]+)(:)';
-                const formattedIds = [...expression.matchAll(regexp)];
-                let exp = expression;
-                formattedIds.forEach(formattedId => {
-                    let replacement = row[formattedId[2]] ? row[formattedId[2]] : 0;
-                    exp = exp.replace(formattedId[0], replacement);
-                });
-                return eval(exp);
-            }
-        } else {
-            uiColumnMetadata.accessor = row => row[serverSideColumnMetadata.id];
-            if(serverSideColumnMetadata.type !== 'STUDENT') {
-                uiColumnMetadata.Cell = this.renderEditable;
-            } else {
+        if(!serverSideColumnMetadata.expression) {
+            if(serverSideColumnMetadata.type === 'STUDENT') {
                 uiColumnMetadata.sortable = true;
+            } else {
+                uiColumnMetadata.Cell = this.renderEditable;
             }
         }
 
@@ -126,6 +134,7 @@ class GradesTable extends React.Component {
                 onFetchData={this.onFetchData}
                 manual
                 columns={this.state.columns.map(this.getUIColumnMetadata)}
+                pageSizeOptions={[10, 25, 50]}
                 defaultPageSize={10}
                 className="-striped -highlight"
             />
