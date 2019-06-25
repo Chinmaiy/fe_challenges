@@ -37,7 +37,7 @@ class GradesTable extends React.Component {
             loadingData: true
         });
 
-        const responsePage = await getTableData(this.props.courseId, this.props.userInfo, page, pageSize); //pass needed information here
+        const responsePage = await getTableData(this.props.courseId, this.props.userInfo, page, pageSize, state.sorted[0]); //pass needed information here
 
         this.setState({
             data: this.extractRowData(responsePage),
@@ -46,7 +46,7 @@ class GradesTable extends React.Component {
     }
 
     extractRowData = (responsePage) => {
-        return responsePage.content.map(obj => obj.componentValues);
+        return responsePage.content.map(obj => obj.values);
     }
 
     renderEditable = cellInfo => {
@@ -83,7 +83,8 @@ class GradesTable extends React.Component {
 
         let uiColumnMetadata = {
             Header: this.getColumnHeaderRenderer(serverSideColumnMetadata),
-            id: serverSideColumnMetadata.id
+            id: serverSideColumnMetadata.id,
+            sortable: false
         };
 
         //should move this part in a separate module
@@ -94,13 +95,18 @@ class GradesTable extends React.Component {
                 const formattedIds = [...expression.matchAll(regexp)];
                 let exp = expression;
                 formattedIds.forEach(formattedId => {
-                    exp = exp.replace(formattedId[0], row[formattedId[2]]);
+                    let replacement = row[formattedId[2]] ? row[formattedId[2]] : 0;
+                    exp = exp.replace(formattedId[0], replacement);
                 });
                 return eval(exp);
             }
         } else {
             uiColumnMetadata.accessor = row => row[serverSideColumnMetadata.id];
-            uiColumnMetadata.Cell = this.renderEditable;
+            if(serverSideColumnMetadata.type !== 'STUDENT') {
+                uiColumnMetadata.Cell = this.renderEditable;
+            } else {
+                uiColumnMetadata.sortable = true;
+            }
         }
 
         return uiColumnMetadata;

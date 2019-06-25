@@ -204,13 +204,19 @@ export const getGradesTableData = async (courseId, userInfo) => {
     // return payload;
 }
 
-export const getTableData = async (courseId, userInfo, page, size) => {
+export const getTableData = async (courseId, userInfo, page, size, sortInfo) => {
+
+    let params = {
+        page,
+        size
+    };
+
+    if(sortInfo) {
+        params = { ...params, orderBy: sortInfo.id, desc: sortInfo.desc };
+    }
 
     const response = await fiiGradeApi.get(`/courses/${courseId}/data`, {
-        paams: {
-            page,
-            size
-        },
+        params,
         headers: {
             Authorization: userInfo.token
         }
