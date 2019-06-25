@@ -173,37 +173,6 @@ export const getGradesCardData = async courseId => {
     return payload;
 }
 
-export const getGradesTableData = async (courseId, userInfo) => {
-
-    const response = await fiiGradeApi.get(`/courses/${courseId}`, {
-        headers: {
-            Authorization: userInfo.token
-        }
-    });
-
-    return response.data;
-
-    // const payload = {
-    //     columns: [
-    //         {
-    //             id: 1,
-    //             name: "Course Component 1"
-    //         },
-    //         {
-    //             id: 2,
-    //             name: "Course Component 2"
-    //         },
-    //         {
-    //             id: 3,
-    //             name: "Formula 1",
-    //             formula: "(C_1 + C_2) / 2"
-    //         }
-    //     ]
-    // }
-
-    // return payload;
-}
-
 export const getTableData = async (courseId, userInfo, page, size, sortInfo) => {
 
     let params = {
@@ -223,22 +192,6 @@ export const getTableData = async (courseId, userInfo, page, size, sortInfo) => 
     });
 
     return response.data;
-
-    // const payload = [
-    //     {
-    //         "C1": 1,
-    //         "C2": 2,
-    //         "C3": 4
-    //     },
-    //     {
-    //         "C1": 11,
-    //         "C2": 12,
-    //         "C3": 14
-    //     }
-
-    // ];
-
-    // return payload;
 }
 
 export const getTableMetadata = async (courseId, userInfo) => {
@@ -250,26 +203,17 @@ export const getTableMetadata = async (courseId, userInfo) => {
     });
 
     return response.data;
-
-    // const payload = [
-    //     {
-    //         id: 'C1',
-    //         name: 'Component 1',
-    //         type: 'NUMERIC'
-    //     },
-    //     {
-    //         id: 'C2',
-    //         name: 'Component 2',
-    //         type: 'NUMERIC'
-    //     },
-    //     {
-    //         id: 'C3',
-    //         name: 'Total',
-    //         type: 'NUMERIC',
-    //         displayExpression: 'Component 1 + Component 2 + 1',
-    //         expression: ':C1: + :C2: + 1'
-    //     }
-    // ];
-
-    // return payload;
 };
+
+export const saveTableData = async (courseId, rows, userInfo) => {
+
+    const response = await fiiGradeApi.post(`/courses/${courseId}/data`, rows,
+        {
+            headers: {
+                Authorization: userInfo.token
+            }     
+        }
+    );
+
+    return response.data;
+}
