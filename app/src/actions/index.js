@@ -173,7 +173,7 @@ export const getGradesCardData = async courseId => {
     return payload;
 }
 
-export const getTableData = async (courseId, userInfo, page, size, sortInfo) => {
+export const getTableData = async (courseId, userInfo, page, size, sortInfo, filters) => {
 
     let params = {
         page,
@@ -184,7 +184,7 @@ export const getTableData = async (courseId, userInfo, page, size, sortInfo) => 
         params = { ...params, orderBy: sortInfo.id, desc: sortInfo.desc };
     }
 
-    const response = await fiiGradeApi.get(`/courses/${courseId}/data`, {
+    const response = await fiiGradeApi.post(`/courses/${courseId}/data`, filters, {
         params,
         headers: {
             Authorization: userInfo.token
@@ -207,7 +207,7 @@ export const getTableMetadata = async (courseId, userInfo) => {
 
 export const saveTableData = async (courseId, rows, userInfo) => {
 
-    const response = await fiiGradeApi.post(`/courses/${courseId}/data`, rows,
+    const response = await fiiGradeApi.put(`/courses/${courseId}/data`, rows,
         {
             headers: {
                 Authorization: userInfo.token

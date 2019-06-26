@@ -54,15 +54,13 @@ class GradesTable extends React.Component {
         //get all the information you need on pagination (page, pageSize), sorting, filtering  from state and call server to get data
         this.filtering = false;
 
-        console.log(tableState);
-
-        const { page, pageSize } = tableState;
+        const { page, pageSize, sorted, filtered } = tableState;
 
         this.setState({
             loadingData: true
         });
 
-        const responsePage = await getTableData(this.props.courseId, this.props.userInfo, page, pageSize, tableState.sorted[0]);
+        const responsePage = await getTableData(this.props.courseId, this.props.userInfo, page, pageSize, sorted[0], filtered);
 
         this.setState({
             data: responsePage.content,
@@ -71,7 +69,7 @@ class GradesTable extends React.Component {
         });
     }
 
-    onFilterChange = (column, value) => {
+    onFilterChange = (filters, column) => {
         this.filtering = true;
     }
 
