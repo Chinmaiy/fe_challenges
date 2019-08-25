@@ -76,6 +76,14 @@ class GradesTable extends React.Component {
     onClickSave = async () => {
 
         const modifiedRows = this.state.data.filter((row, idx) => this.modifiedDataRowsIndexes.has(idx));
+        //todo could have this part of data validation (i.e. cannot save empty values for columns)
+        modifiedRows.forEach(modifiedRow => {
+            _.forOwn(modifiedRow.values, (v, k) => {
+                if(v === '') {
+                    modifiedRow.values[k] = 0;
+                }
+            })
+        })
         
         const response = await saveTableData(this.props.courseId, modifiedRows, this.props.userInfo);
 
@@ -107,7 +115,13 @@ class GradesTable extends React.Component {
                 onChange={(syntheticEvent, { value }) => {
                     if(value >= 0) {
                         const data = [...this.state.data];
-                        data[cellInfo.index].values[cellInfo.column.id] = parseFloat(value);
+                        let nr = 0;
+                        if(value === '') {
+                            data[cellInfo.index].values[cellInfo.column.id] = '';
+                        } else {
+                            nr = parseFloat(value);
+                            data[cellInfo.index].values[cellInfo.column.id] = nr;
+                        } 
                         //compute other row values
                         this.state.columns.forEach(column => {
                             if(column.expression) {
@@ -123,6 +137,7 @@ class GradesTable extends React.Component {
                                 data[cellInfo.index].values[column.id] = eval(exp);
                             }
                         });
+                    
                         this.modifiedDataRowsIndexes.add(cellInfo.index);
                         this.setState({ 
                             data,
