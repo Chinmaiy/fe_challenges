@@ -1,6 +1,12 @@
 import { LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT } from '../actions/types';
 
-const INITIAL_STATE = {
+const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+const INITIAL_STATE = storedUserInfo ?
+{
+    isSignedIn: true,
+    ...storedUserInfo
+} : {
     isSignedIn: false,
     token: '',
     id: null,

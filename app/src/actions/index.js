@@ -23,6 +23,10 @@ export const leftMenuClicked = (leftMenuActiveItem) => {
 export const login = (payload) => async dispatch => {
 
     const response = await fiiGradeApi.post('/auth/signin', payload);
+    if(response.status === 200) {
+        localStorage.setItem('userInfo', JSON.stringify(response.data));
+    }
+
     dispatch({
         type: response.status === 200 ? LOGIN_SUCCESS : LOGIN_FAIL,
         payload: response.data
@@ -41,8 +45,7 @@ export const signup = async (payload) => {
 
 export const logout = () => async dispatch => {
 
-    //mock api request
-    await wait(1000);
+    localStorage.removeItem('userInfo');
 
     dispatch({
         type: LOGOUT
