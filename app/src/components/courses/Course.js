@@ -69,6 +69,7 @@ class Course extends React.Component {
 
                 <Button as={Link} to={`/courses/${courseId}/grades`} color="teal">View</Button> 
                 {this.renderEnrollButton()}
+                {this.renderDeleteButton()}
                 
             </Card.Content>
         );
@@ -98,6 +99,12 @@ class Course extends React.Component {
         this.setState({
             isCurrentUserEnrolled: success
         });
+    }
+
+    renderDeleteButton = () => {
+        if(this.state.isCurrentUserOwner) {
+            return <Button color="red" onClick={() => this.props.onDelete(this.props.courseId)}>Delete</Button>
+        }
     }
 }
 

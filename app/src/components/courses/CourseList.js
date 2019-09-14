@@ -1,10 +1,11 @@
 import React from 'react';
 import { Grid, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { toast } from 'react-semantic-toasts';
 
 import Course from './Course';
 import Spinner from '../common/Spinner';
-import { getCoursesWithOwnersInfo } from '../../actions';
+import { getCoursesWithOwnersInfo, deleteCourse } from '../../actions';
 
 class CourseList extends React.Component {
 
@@ -49,11 +50,34 @@ class CourseList extends React.Component {
                                 ownerName={course.owner.name}
                                 ownerUsername={course.owner.username}
                                 userInfo={this.props.userInfo}
+                                onDelete={this.onDeleteCourseClick}
                         />
                     </Grid.Column>
                 )}
             </Grid>
         );
+    }
+
+    onDeleteCourseClick = async courseId => {
+
+        const response = await deleteCourse(courseId, this.props.userInfo.token);
+        const { success, message } = response;
+
+        if(success) {
+            const newCourses = this.state.courses.filter(course => course.id !== courseId);
+            this.setState({
+                courses: newCourses
+            });
+        }
+
+        toast({
+            title: message,
+            type: success ? 'info' : 'error',
+            color: success ? 'teal' : 'red',
+            size: 'small',
+            time: 5000,
+            animation: 'slide left'
+        });
     }
 }
 

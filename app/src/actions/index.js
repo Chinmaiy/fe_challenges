@@ -119,6 +119,16 @@ export const createCourse = async (payload, token) => {
     }
 }
 
+export const deleteCourse = async (courseId, token) => {
+    const response = await fiiGradeApi.delete(`/courses/${courseId}`, {
+        headers: {
+            Authorization: token
+        }
+    });
+
+    return response.data;
+}
+
 export const isEnrolled = async (userInfo, courseId) => {
 
     const response = await fiiGradeApi.get(`/courses/${courseId}/checkEnrollment`, {
