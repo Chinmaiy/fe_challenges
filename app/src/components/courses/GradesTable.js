@@ -5,8 +5,9 @@ import 'react-table/react-table.css';
 import { toast } from 'react-semantic-toasts';
 import _ from 'lodash';
 
-import { getTableMetadata, getTableData, saveTableData } from '../../actions';
+import { getTableMetadata, getTableData, saveTableData, getGroups } from '../../actions';
 import Spinner from '../common/Spinner';
+import GroupSelection from './GroupSelection';
 
 class GradesTable extends React.Component {
 
@@ -19,6 +20,7 @@ class GradesTable extends React.Component {
             loadingColumns: true,
             data: [],
             columns: [],
+            groups: [],
             totalPages: null,
             isModified: false
         }
@@ -31,14 +33,19 @@ class GradesTable extends React.Component {
 
     async componentDidMount() {
 
-        const courseMetadata = await getTableMetadata(this.props.courseId, this.props.userInfo);
+        const [courseMetadata, groups] = await Promise.all([
+            getTableMetadata(this.props.courseId, this.props.userInfo),
+            getGroups(this.props.userInfo.token)
+        ]);
 
+        this.groups = groups;
         const columns = courseMetadata.components;
 
         this.setState({
             courseName: courseMetadata.name,
             columns,
-            loadingColumns: false
+            loadingColumns: false,
+            groups
         });
     }
 
@@ -70,7 +77,9 @@ class GradesTable extends React.Component {
     }
 
     onFilterChange = (filters, column) => {
-        this.filtering = true;
+        if(!column.eagerLoadOnChange) {
+            this.filtering = true;
+        }
     }
 
     onClickSave = async () => {
@@ -134,7 +143,7 @@ class GradesTable extends React.Component {
                                     let replacement = row.values[formattedId[2]] ? row.values[formattedId[2]] : 0;
                                     exp = exp.replace(formattedId[0], replacement);
                                 });
-                                data[cellInfo.index].values[column.id] = eval(exp);
+                                data[cellInfo.index].values[column.id] = Math.round(eval(exp) * 100) / 100;
                             }
                         });
                     
@@ -172,9 +181,13 @@ class GradesTable extends React.Component {
         };
 
         if(!serverSideColumnMetadata.expression) {
-            if(serverSideColumnMetadata.type === 'STUDENT') {
+            if(['STUDENT', 'GROUPS'].includes(serverSideColumnMetadata.type)) {
                 uiColumnMetadata.sortable = true;
                 uiColumnMetadata.filterable = true;
+                if(serverSideColumnMetadata.type === 'GROUPS') {
+                    uiColumnMetadata.Filter = this.renderGroupFilter;
+                    uiColumnMetadata.eagerLoadOnChange = true;
+                }
             } else {
                 uiColumnMetadata.Cell = this.renderEditable;
             }
@@ -182,6 +195,10 @@ class GradesTable extends React.Component {
 
         return uiColumnMetadata;
     };
+
+    renderGroupFilter = ({filter, onChange }) => {
+        return <GroupSelection groups={this.state.groups} onChange={onChange}/>;
+    }
 
     render() {
 

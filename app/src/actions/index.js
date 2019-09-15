@@ -230,3 +230,13 @@ export const saveTableData = async (courseId, rows, userInfo) => {
 
     return response.data;
 }
+
+export const getGroups = async (token) => {
+    const response = await fiiGradeApi.get('/groups', {
+        headers: {
+            Authorization: token
+        }
+    });
+
+    return response.data;
+}
