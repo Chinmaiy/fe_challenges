@@ -16,6 +16,7 @@ class LoginPage extends React.Component {
             const prevLocation = this.props.location.state || { from: { pathname: '/' } };
             return <Redirect to={prevLocation.from.pathname}/>
         }
+        //todo should disable sign up when waiting login
         return (
             <Container>
                 <Logo/>

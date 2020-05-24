@@ -1,60 +1,7 @@
 import React from 'react';
 
-import { Form, Button, Message } from 'semantic-ui-react';
-import { Field, reduxForm } from 'redux-form';
-
-class LoginForm extends React.Component {
-
-    render() {
-        return (
-            <Form error size="big" onSubmit={this.props.handleSubmit(this.props.onSubmit)}>
-
-                <Field 
-                    name="email" 
-                    component={this.renderFormField} 
-                    icon="mail"
-                    placeholder="Email"
-                    type="email"/>
-
-                <Field 
-                    name="password" 
-                    component={this.renderFormField}
-                    icon="lock"
-                    placeholder="Password"
-                    type="password"/>
-
-                <Button fluid color="teal">Login</Button>
-            </Form>
-        );
-    }
-
-    renderFormField({ input, meta, icon, placeholder, type }) {
-        const error = displayError(meta);
-        return (
-            <Form.Field error={error}>
-                <Form.Input
-                {...input}
-                icon={icon}
-                iconPosition="left" 
-                placeholder={placeholder}
-                type={type}/>
-
-                {renderError(meta)}
-                
-            </Form.Field>
-        );
-    }
-};
-
-const displayError = ({ error, touched }) => {
-    return error && touched;
-};
-
-const renderError = meta => {
-    if(displayError(meta)) {
-        return <Message size="mini" error content={meta.error}/>;
-    }
-};
+import { Form as UIForm, Button, Message } from 'semantic-ui-react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const validate = ({ email, password }) => {
     const errors = {};
@@ -70,7 +17,68 @@ const validate = ({ email, password }) => {
     return errors;
 };
 
-export default reduxForm({
-    form: 'loginForm',
-    validate
-})(LoginForm);
+class LoginForm extends React.Component {
+
+    render() {
+
+        return (
+            <Formik
+                initialValues={{ email: '', password: ''}}
+                validate={validate}
+                onSubmit={(values, { setSubmitting }) => this.props.onSubmit(values)}
+            >
+                {({errors, touched, isSubmitting}) => (
+                    <Form>
+                        <UIForm as="div" error size="big">
+                            <Field
+                                errors={errors}
+                                touched={touched}
+                                name="email"
+                                type="email"
+                                icon="mail"
+                                placeholder="Email"
+                                disabled={isSubmitting}
+                                as={this.renderFormField}
+                            />
+                            <ErrorMessage name="email" render={renderError}/>
+
+                            <Field
+                                errors={errors}
+                                touched={touched}
+                                name="password"
+                                type="password"
+                                icon="lock"
+                                placeholder="Password"
+                                disabled={isSubmitting}
+                                as={this.renderFormField}
+                            />
+                            <ErrorMessage name="password" render={renderError}/>
+
+                            <Button type="submit" disabled={isSubmitting} fluid color="teal">Login</Button>
+                        </UIForm>
+                    </Form>
+                )}
+            </Formik>
+        );
+    }
+
+    renderFormField = ({ errors, touched, name, ...rest }) => {
+        const errorPresent = errors[name] && touched[name];
+        return (
+            <UIForm.Field error={errorPresent}>
+                <UIForm.Input
+                    name={name}
+                    iconPosition="left"
+                    {...rest}
+                />
+            </UIForm.Field>
+        );
+    }
+};
+
+const renderError = errorMessage => {
+    return <Message size="mini" error content={errorMessage}/>;
+}
+
+
+export default LoginForm;

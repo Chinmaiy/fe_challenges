@@ -11,7 +11,7 @@ class SignUpForm extends React.Component {
         password: ''
     };
 
-    onInputChage = ({value, name}) => {
+    onInputChange = ({value, name}) => {
         this.setState({
             [name]: value
         });
@@ -67,7 +67,7 @@ class SignUpForm extends React.Component {
 
         return (
             <Input
-            onChange={(event, input) => this.onInputChage(input)}
+            onChange={(event, input) => this.onInputChange(input)}
             iconPosition="left"
             {...rest}
             />

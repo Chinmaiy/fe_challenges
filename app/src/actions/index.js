@@ -20,6 +20,8 @@ export const leftMenuClicked = (leftMenuActiveItem) => {
     };
 }
 
+//export const login = (payload) => async dispatch => wait(5000);
+
 export const login = (payload) => async dispatch => {
 
     const response = await fiiGradeApi.post('/auth/signin', payload);
